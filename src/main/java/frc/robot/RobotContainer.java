@@ -6,6 +6,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ArmLockCommand;
+import frc.robot.commands.ArmMoveCommand;
+import frc.robot.commands.PlaceholderCommand;
+import frc.robot.subsystems.ArmSubsystem;
+import static frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -15,17 +22,27 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer
 {
+    // The robot's subsystems and commands are defined here...
+    ArmSubsystem armSubsystem = new ArmSubsystem();
+
+    ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
+    ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
+    PlaceholderCommand placeholderCommand = new PlaceholderCommand(armSubsystem);
+
+    JoystickButton trigger = new JoystickButton(cJoystick, 1);
+
     public RobotContainer()
     {
         // Configure the trigger bindings
         configureBindings();
+        CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armMoveCommand);
     }
     
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings()
     {
-
+        trigger.whileTrue(armLockCommand);
     }
     
     
