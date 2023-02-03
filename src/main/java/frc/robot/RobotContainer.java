@@ -10,8 +10,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmLockCommand;
 import frc.robot.commands.ArmMoveCommand;
+import frc.robot.commands.FieldOrientedDriveCommand;
 import frc.robot.commands.PlaceholderCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
+
 import static frc.robot.Constants.*;
 
 /**
@@ -23,11 +26,14 @@ import static frc.robot.Constants.*;
 public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
+
+    private final DriveSubsystem driveSubsystem = new DriveSubsystem();
     ArmSubsystem armSubsystem = new ArmSubsystem();
 
     ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
     PlaceholderCommand placeholderCommand = new PlaceholderCommand(armSubsystem);
+    FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
 
@@ -36,6 +42,7 @@ public class RobotContainer
         // Configure the trigger bindings
         configureBindings();
         CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armMoveCommand);
+        CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
     }
     
     
@@ -43,6 +50,8 @@ public class RobotContainer
     private void configureBindings()
     {
         trigger.whileTrue(armLockCommand);
+
+        Constants.zeroGyro.whenActive(driveSubsystem::zeroGyro);
     }
     
     
