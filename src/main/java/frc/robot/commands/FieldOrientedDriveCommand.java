@@ -14,9 +14,10 @@ public class FieldOrientedDriveCommand extends CommandBase {
     }
 
     public void execute() {
+        //switch to getXboxInput() to  use xbox controller
         double[] input = getJoystickInput();
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2], driveSubsystem.getRotation());
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
 
         driveSubsystem.drive(speeds);
     }
@@ -36,5 +37,22 @@ public class FieldOrientedDriveCommand extends CommandBase {
         double[] joystickReturn = new double[] {joystickY, joystickX, joystickZ};
 
         return joystickReturn;
+    }
+
+    public double[] getXboxInput() {
+        double xboxLeftY = Constants.cXbox.getLeftY() * -1;
+        double xboxLeftX = Constants.cXbox.getLeftX() * -1;
+        double xboxRightX = Constants.cXbox.getRightX() * -1;
+
+        if  (Math.abs(xboxLeftY) <= Constants.cXboxMin) {
+            xboxLeftY = 0.0; }
+        if (Math.abs(xboxLeftX) <= Constants.cXboxMin) {
+            xboxLeftX = 0.0; }
+        if (Math.abs(xboxRightX) <= Constants.cXboxMin) {
+            xboxRightX = 0.0; }
+
+        double[] xboxReturn = new double[] {xboxLeftY, xboxLeftX, xboxRightX};
+
+        return xboxReturn;
     }
 }

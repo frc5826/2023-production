@@ -5,13 +5,12 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmLockCommand;
-import frc.robot.commands.ArmMoveCommand;
-import frc.robot.commands.FieldOrientedDriveCommand;
-import frc.robot.commands.PlaceholderCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -34,6 +33,7 @@ public class RobotContainer
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
     PlaceholderCommand placeholderCommand = new PlaceholderCommand(armSubsystem);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
+    AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
 
@@ -51,7 +51,12 @@ public class RobotContainer
     {
         trigger.whileTrue(armLockCommand);
 
-        Constants.zeroGyro.whenActive(driveSubsystem::zeroGyro);
+        Constants.zeroGyro.onTrue(new InstantCommand(() -> {
+            driveSubsystem.zeroGyroYaw();
+            driveSubsystem.zeroGyroRollPitch();
+        }));
+
+        Constants.autoBalance.whileTrue(autoBalanceCommand);
     }
     
     
@@ -63,6 +68,6 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         // TODO: Implement properly
-        return null;
+        return driveSubsystem.followTrajectoryCommand(PathPlanner.loadPath("New Path", 1, 1));
     }
 }
