@@ -33,8 +33,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     }
 
-    public double encoderToRad(int encoderReading, int encoderOffset){
-        return (encoderReading - encoderOffset) * (Math.PI / cArmEncoderClicks);
+    public double encoderToRad(double encoderReading, double encoderOffset){
+        return (encoderReading - encoderOffset) * (Math.PI / cArmClicksPerRotation);
+    }
+
+    public void setMastRad(double position){
+        mastMotor.set(ControlMode.Position, Math.min(Math.max(position * (cArmClicksPerRotation /Math.PI) + cMastEncoderOffset, cMastEncoderMin), cMastEncoderMax));
+    }
+
+    public void setArmRad(double position){
+        armMotor.set(ControlMode.Position, Math.min(Math.max(position * (cArmClicksPerRotation /Math.PI) + cArmEncoderOffset, cArmEncoderMin), cArmEncoderMax));
     }
 
     public void setBaseSpeed(double speed){

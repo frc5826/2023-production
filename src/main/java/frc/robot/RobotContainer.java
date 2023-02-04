@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.commands.ArmLockCommand;
+import frc.robot.commands.ArmMoveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -31,7 +33,6 @@ public class RobotContainer
 
     ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
-    PlaceholderCommand placeholderCommand = new PlaceholderCommand(armSubsystem);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
 

@@ -9,7 +9,6 @@ public class ArmLockCommand extends CommandBase {
 
     private double baseLockAngle, middleLockAngle;
 
-
     public ArmLockCommand(ArmSubsystem armSubsystem){
         this.armSubsystem = armSubsystem;
         addRequirements(armSubsystem);

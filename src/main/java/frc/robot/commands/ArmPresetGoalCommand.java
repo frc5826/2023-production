@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class PlaceholderCommand extends CommandBase {
+public class ArmPresetGoalCommand extends CommandBase {
 
-    ArmSubsystem armSubsystem;
+    private ArmSubsystem armSubsystem;
 
-    public PlaceholderCommand(ArmSubsystem armSubsystem){
+    public ArmPresetGoalCommand(ArmSubsystem armSubsystem){
         this.armSubsystem = armSubsystem;
         addRequirements(armSubsystem);
     }
@@ -16,21 +16,21 @@ public class PlaceholderCommand extends CommandBase {
     public void initialize() {
         super.initialize();
 
-        System.out.println("Placeholder Init");
+
     }
 
     @Override
     public void execute() {
         super.execute();
-        armSubsystem.setBaseSpeed(0.4);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return super.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
-        armSubsystem.setBaseSpeed(0);
-
-        System.out.println("Placeholder End");
-
         super.end(interrupted);
     }
 }
