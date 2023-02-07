@@ -18,6 +18,9 @@ public class Constants {
     public static final int cArmPIDLoopID = 0;
     public static final int cTimeoutMs = 30;
 
+    //TODO find upper arm value
+    public static final double[] cArmLengths = {41, 48};
+
     //TODO find important encoder values
     public static final double cMastEncoderOffset = 0;
     public static final double cArmEncoderOffset = 0;

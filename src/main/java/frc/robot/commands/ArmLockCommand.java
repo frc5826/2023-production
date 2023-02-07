@@ -18,8 +18,8 @@ public class ArmLockCommand extends CommandBase {
     public void initialize() {
         super.initialize();
 
-        this.baseLockAngle = armSubsystem.getBaseEncoderPosition();
-        this.middleLockAngle = armSubsystem.getMiddleEncoderPosition();
+        this.baseLockAngle = armSubsystem.getMastPosition();
+        this.middleLockAngle = armSubsystem.getArmPosition();
 
         System.out.println("Arm lock init");
     }
@@ -27,8 +27,8 @@ public class ArmLockCommand extends CommandBase {
     @Override
     public void execute() {
         super.execute();
-        armSubsystem.setBasePosition(baseLockAngle);
-        armSubsystem.setMiddlePosition(middleLockAngle);
+        armSubsystem.setMastPosition(baseLockAngle);
+        armSubsystem.setArmPosition(middleLockAngle);
     }
 
     @Override

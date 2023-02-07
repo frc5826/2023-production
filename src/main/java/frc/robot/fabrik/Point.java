@@ -45,4 +45,8 @@ public class Point {
         return y - origin.getY();
     }
 
+    public double getDistanceTo(Point other){
+        return Math.sqrt(Math.pow(this.getXRelative(other), 2) + Math.pow(this.getYRelative(other), 2));
+    }
+
 }

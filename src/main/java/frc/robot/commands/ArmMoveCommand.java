@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -19,26 +20,28 @@ public class ArmMoveCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if(Math.abs(cJoystick.getY()) >= 0.05){
-            armSubsystem.setBaseSpeed(cJoystick.getY());
-        }
-        else{
-            armSubsystem.setBaseSpeed(0);
+        if(cJoystick.getRawButton(5) || cJoystick.getRawButton(3)) {
+            if (Math.abs(cJoystick.getY()) >= 0.05) {
+                armSubsystem.setMastSpeed(cJoystick.getY());
+            } else {
+                armSubsystem.setMastSpeed(0);
+            }
         }
 
-        if(Math.abs(cJoystick.getZ()) >= 0.05){
-            armSubsystem.setMiddleSpeed(cJoystick.getZ());
-        }
-        else{
-            armSubsystem.setMiddleSpeed(0);
+        if(cJoystick.getRawButton(6) || cJoystick.getRawButton(3)) {
+            if (Math.abs(cJoystick.getZ()) >= 0.05) {
+                armSubsystem.setArmSpeed(cJoystick.getZ());
+            } else {
+                armSubsystem.setArmSpeed(0);
+            }
         }
 
     }
 
     @Override
     public void end(boolean interrupted) {
-        armSubsystem.setBaseSpeed(0);
-        armSubsystem.setMiddleSpeed(0);
+        armSubsystem.setMastSpeed(0);
+        armSubsystem.setArmSpeed(0);
         super.end(interrupted);
     }
 }

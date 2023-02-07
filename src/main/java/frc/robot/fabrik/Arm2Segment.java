@@ -2,13 +2,6 @@ package frc.robot.fabrik;
 
 import java.util.Arrays;
 
-enum MovDir{
-    UP,
-    DOWN,
-    FORWARD,
-    BACKWARD
-}
-
 public class Arm2Segment {
 
     private double[] armLengths;
@@ -16,44 +9,33 @@ public class Arm2Segment {
     private Point goal;
 
     private double maxReach;
-    private double minReach;
 
     private final Point armOriginPoint;
 
     private double errorMargin;
 
-    public Arm2Segment(double[] armLengths, double errorMargin){
+    public Arm2Segment(double[] armLengths, double errorMargin, Point armOriginPoint){
         this.armLengths = armLengths;
         for(int x = 0; x < points.length; x++){
             points[x] = new Point();
         }
-        findPointsFromEncoders();
+        setOptimalCalcStartPos();
 
         goal = new Point();
-        armOriginPoint = new Point();
+        this.armOriginPoint = new Point(armOriginPoint.getX(), armOriginPoint.getY());
 
         this.errorMargin = errorMargin;
 
         maxReach = Arrays.stream(armLengths).sum();
-        minReach = Math.abs(armLengths[2] - armLengths[1]);
     }
 
-    public void findPointsFromEncoders(){
-        //TODO use encoders to find our starting points
-        //currently assumes our arm is perfectly vertical, fine for current equations
+    public void setOptimalCalcStartPos(){
         points[1].setCoords(0, armLengths[0]);
-        points[2].setCoords(0, armLengths[1] + points[1].getY());
+        points[2].setCoords(armLengths[1], armLengths[0]);
     }
 
     public void setGoal(Point goal){
         this.goal.setCoords(goal);
-    }
-
-    public void moveGoal(double x, double y){
-        this.setGoal(new Point(
-                Math.max( Math.min(x + goal.getX(), maxReach), 0),
-                Math.max( Math.min(y + goal.getY(), maxReach), 0)
-        ));
     }
 
     public boolean outOfMargin(){
@@ -61,10 +43,12 @@ public class Arm2Segment {
     }
 
     public boolean goalIsReachable(){
-        return minReach <= new Vector(goal, new Point()).getMagnitude() && new Vector(goal, new Point()).getMagnitude() <= maxReach;
+        return new Vector(goal, armOriginPoint).getMagnitude() <= maxReach;
     }
 
     public void fabrik(){
+
+        setOptimalCalcStartPos();
 
         int i = 0;
 
@@ -112,6 +96,10 @@ public class Arm2Segment {
 
 
         }
+
+        //Doesn't work and not worth fixing.
+        points[1].setCoords(reflectionFix());
+
     }
 
     public double getArmMiddleAngle(){
@@ -133,6 +121,25 @@ public class Arm2Segment {
 
         return vector.getTerminal();
 
+    }
+
+    //Doesn't work and not worth fixing.
+    public Point reflectionFix(){
+
+        if(points[1].getYRelative(armOriginPoint) <= 0 || !goalIsReachable()){
+            return points[1];
+        }
+
+        double x = points[2].getXRelative(armOriginPoint);
+        double y = points[2].getYRelative(armOriginPoint);
+        double a = points[1].getXRelative(armOriginPoint);
+        double b = points[1].getYRelative(armOriginPoint);
+        double h = new Vector(armOriginPoint, points[2]).getMagnitude();
+
+        return new Point(
+                (a * (2 * Math.pow( x/h,2) - 1) + 2*b * (x*y) / Math.pow(h,2)) + armOriginPoint.getX(),
+                (-b * (2 * Math.pow( x/h,2) - 1) + 2*a * (x*y) / Math.pow(h,2)) + armOriginPoint.getY()
+        );
     }
 
     public Point getPointInArm(int point){
