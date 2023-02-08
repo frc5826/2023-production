@@ -158,10 +158,10 @@ public class DriveSubsystem extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> resetOdometry(path) ),
                 new PPSwerveControllerCommand(
-                        PathPlanner.loadPath("New Path", .5, 1),
+                        PathPlanner.loadPath("New Path", 5, 5),
                         odometry::getPoseMeters,
                         new PIDController(2, 0, 0),
-                        new PIDController(2, 0, 0),
+                        new PIDController(2, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)
                         new PIDController(3, 0, 0),
                         this::drive,
                         true,

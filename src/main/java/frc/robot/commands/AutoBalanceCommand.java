@@ -10,7 +10,7 @@ public class AutoBalanceCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
 
     private AHRS gyro;
-    private PID pidy = new PID(.8, 0, .1, 2, 0.1, Math.sin(Math.toRadians(1.25)));
+    private PID pidy = new PID(.7, 0, 0, 2, 0.1, Math.sin(Math.toRadians(1.25)));
     private PID pidz = new PID(.2,0,0, 2, 0.05, .7);
     //private PID pidx = new PID();
 

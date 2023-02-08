@@ -15,6 +15,7 @@ import frc.robot.commands.ArmLockCommand;
 import frc.robot.commands.ArmMoveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import static frc.robot.Constants.*;
 
@@ -30,6 +31,7 @@ public class RobotContainer
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
     ArmSubsystem armSubsystem = new ArmSubsystem();
+    VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
