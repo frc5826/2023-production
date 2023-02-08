@@ -1,6 +1,7 @@
 package frc.robot.fabrik;
 
 import java.util.Arrays;
+import static frc.robot.Constants.*;
 
 public class Arm2Segment {
 
@@ -35,7 +36,7 @@ public class Arm2Segment {
     }
 
     public void setGoal(Point goal){
-        this.goal.setCoords(goal);
+        this.goal.setCoords(Math.min(Math.max(goal.getX(), cGoalXMin), cGoalXMax), Math.min(Math.max(goal.getY(), cGoalYMin), cGoalYMax));
     }
 
     public boolean outOfMargin(){
@@ -97,7 +98,6 @@ public class Arm2Segment {
 
         }
 
-        //Doesn't work and not worth fixing.
         points[1].setCoords(reflectionFix());
 
     }
@@ -123,10 +123,9 @@ public class Arm2Segment {
 
     }
 
-    //Doesn't work and not worth fixing.
     public Point reflectionFix(){
 
-        if(points[1].getYRelative(armOriginPoint) <= 0 || !goalIsReachable()){
+        if(points[1].getYRelative(armOriginPoint) >= 0 || !goalIsReachable()){
             return points[1];
         }
 
@@ -136,10 +135,12 @@ public class Arm2Segment {
         double b = points[1].getYRelative(armOriginPoint);
         double h = new Vector(armOriginPoint, points[2]).getMagnitude();
 
-        return new Point(
+        Point alternate = new Point(
                 (a * (2 * Math.pow( x/h,2) - 1) + 2*b * (x*y) / Math.pow(h,2)) + armOriginPoint.getX(),
                 (-b * (2 * Math.pow( x/h,2) - 1) + 2*a * (x*y) / Math.pow(h,2)) + armOriginPoint.getY()
         );
+
+        return alternate.getY() > points[1].getY() ? alternate : points[1];
     }
 
     public Point getPointInArm(int point){

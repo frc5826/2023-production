@@ -15,6 +15,11 @@ public class Constants {
     public static final int cBaseArmID = 5;
     public static final int cMiddleArmID = 9;
 
+    public static final double cGoalXMin = 0;
+    public static final double cGoalYMin = 0;
+    public static final double cGoalXMax = 45;
+    public static final double cGoalYMax = 75;
+
     public static final int cArmPIDLoopID = 0;
     public static final int cTimeoutMs = 30;
 

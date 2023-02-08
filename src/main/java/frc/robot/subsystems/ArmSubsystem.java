@@ -98,6 +98,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setArmGoal(Point goal){
         arm.setGoal(goal);
+
+
     }
 
     public void calculateArm(){
