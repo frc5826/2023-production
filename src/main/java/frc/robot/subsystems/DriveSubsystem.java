@@ -50,10 +50,10 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSize(2, 2)
                 .withPosition(0, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, 2)
-                .withSteerMotor(MotorType.NEO, 1)
-                .withSteerEncoderPort(51)
-                .withSteerOffset(Math.toRadians(-154.9594796625574 + 180))
+                .withDriveMotor(MotorType.NEO, 6)
+                .withSteerMotor(MotorType.NEO, 5)
+                .withSteerEncoderPort(53)
+                .withSteerOffset(Math.toRadians(-66.248149628112955))
                 .build();
 
         frontRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
@@ -62,8 +62,8 @@ public class DriveSubsystem extends SubsystemBase {
                 .withGearRatio(MK4Inverted)
                 .withDriveMotor(MotorType.NEO, 4)
                 .withSteerMotor(MotorType.NEO, 3)
-                .withSteerEncoderPort(49)
-                .withSteerOffset(Math.toRadians(-223.7200322258296))
+                .withSteerEncoderPort(50)
+                .withSteerOffset(Math.toRadians(-250.7614831463437))
                 .build();
 
         backLeftModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
@@ -72,18 +72,18 @@ public class DriveSubsystem extends SubsystemBase {
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
                 .withDriveMotor(MotorType.NEO, 8)
                 .withSteerMotor(MotorType.NEO, 7)
-                .withSteerEncoderPort(50)
-                .withSteerOffset(Math.toRadians(-23.72953519464101))
+                .withSteerEncoderPort(52)
+                .withSteerOffset(Math.toRadians(-280.9738197358947))
                 .build();
 
         backRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(6, 0))
                 .withGearRatio(MK4Inverted)
-                .withDriveMotor(MotorType.NEO, 6)
-                .withSteerMotor(MotorType.NEO, 5)
-                .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-218.12008306874122))
+                .withDriveMotor(MotorType.NEO, 2)
+                .withSteerMotor(MotorType.NEO, 1)
+                .withSteerEncoderPort(51)
+                .withSteerOffset(Math.toRadians(-47.8125))
                 .build();
 
         Translation2d frontLeftWheel = new Translation2d(0.24765, 0.284);
