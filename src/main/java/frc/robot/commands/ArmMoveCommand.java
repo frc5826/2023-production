@@ -26,6 +26,8 @@ public class ArmMoveCommand extends CommandBase {
             } else {
                 armSubsystem.setMastSpeed(0);
             }
+        } else {
+            armSubsystem.setMastSpeed(0);
         }
 
         if(cJoystick.getRawButton(6) || cJoystick.getRawButton(3)) {
@@ -34,6 +36,8 @@ public class ArmMoveCommand extends CommandBase {
             } else {
                 armSubsystem.setArmSpeed(0);
             }
+        } else {
+            armSubsystem.setArmSpeed(0);
         }
 
     }

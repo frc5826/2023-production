@@ -12,8 +12,8 @@ public class Constants {
     public static final double cJoystickMin = 0.1;
     public static final double cXboxMin = 0.15;
 
-    public static final int cBaseArmID = 5;
-    public static final int cMiddleArmID = 9;
+    public static final int cBaseArmID = 9;
+    public static final int cMiddleArmID = 10;
 
     public static final double cGoalXMin = 0;
     public static final double cGoalYMin = 0;
@@ -27,14 +27,16 @@ public class Constants {
     public static final double[] cArmLengths = {41, 42.5};
 
     //TODO find important encoder values
-    public static final double cMastEncoderOffset = 0;
-    public static final double cArmEncoderOffset = 0;
+    public static final int cMastEncoderID = 0;
+    public static final int cArmEncoderID = 1;
+    public static final double cMastEncoderOffset = 0.59111;
+    public static final double cArmEncoderOffset = 0.18389;
     public static final double cMastEncoderMax = 0;
     public static final double cMastEncoderMin = 0;
     public static final double cArmEncoderMax = 0;
     public static final double cArmEncoderMin = 0;
 
-    public static final double cArmP = 1;
+    public static final double cArmP = 0.1;
     public static final double cArmI = 0;
     public static final double cArmD = 0;
 
@@ -45,7 +47,7 @@ public class Constants {
 
     public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
     public static Trigger align = new Trigger(() -> cJoystick.getRawButton(12));
-    public static final int cArmEncoderClicks = 1024;
+    public static final int cArmEncoderClicks = 1;
 
     public static final double cTopConeX = 39.75;
     public static final double cTopConeY = 46;

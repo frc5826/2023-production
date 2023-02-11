@@ -37,14 +37,16 @@ public class ArmSubsystem extends SubsystemBase {
         armMotor.configPeakOutputReverse(-0.4, cTimeoutMs);
 
 
-        mastEncoder = new DutyCycleEncoder(9);
-        armEncoder = new DutyCycleEncoder(8);
+        mastEncoder = new DutyCycleEncoder(cMastEncoderID);
+        armEncoder = new DutyCycleEncoder(cArmEncoderID);
 
         shuffleboardTab.addNumber("Mast Encoder Degrees", this::getMastDeg);
         shuffleboardTab.addNumber("Arm Encoder Degrees", this::getArmDeg);
 
         shuffleboardTab.addNumber("Mast Encoder Absolute", this::getMastPosition);
         shuffleboardTab.addNumber("Arm Encoder Absolute", this::getArmPosition);
+
+
 
     }
 
