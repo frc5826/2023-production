@@ -15,6 +15,7 @@ import frc.robot.commands.ArmLockCommand;
 import frc.robot.commands.ArmMoveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.GrabbinSubsystem;
 
 import static frc.robot.Constants.*;
 
@@ -35,6 +36,9 @@ public class RobotContainer
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
+
+    GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
+    GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
 

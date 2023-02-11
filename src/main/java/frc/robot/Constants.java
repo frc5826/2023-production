@@ -24,7 +24,7 @@ public class Constants {
     public static final int cTimeoutMs = 30;
 
     //TODO find upper arm value
-    public static final double[] cArmLengths = {41, 48};
+    public static final double[] cArmLengths = {41, 42.5};
 
     //TODO find important encoder values
     public static final double cMastEncoderOffset = 0;
@@ -62,7 +62,10 @@ public class Constants {
     public static final Point cBottomCone = new Point(22.75, 34);
     public static final Point cBottomCube = new Point(22.75, 23.5);
     public static final Point cArmOrigin = new Point(-17, 10);
-
     public static final double cArmBuffer = 7;
+
+    public static final int cCompresser = 11;
+    public static final int cSolenoidFWD = 1;
+    public static final int cSolenoidREV = 0;
 
 }
