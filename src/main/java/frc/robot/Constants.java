@@ -38,12 +38,13 @@ public class Constants {
     public static final double cArmI = 0;
     public static final double cArmD = 0;
 
-    public static final double cDriveSpeed = 6;
+    public static final double cDriveSpeed = 8;
     public static final double cTurnSpeed = 1.5;
 
-    public static Trigger zeroGyro = new Trigger(() -> cJoystick.getRawButtonPressed(8));
+    public static Trigger zeroGyro = new Trigger(() -> cJoystick.getRawButtonPressed(8)); //cJoystick.getRawButtonPressed(8));
 
     public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
+    public static Trigger align = new Trigger(() -> cJoystick.getRawButton(12));
     public static final int cArmEncoderClicks = 1024;
 
     public static final double cTopConeX = 39.75;

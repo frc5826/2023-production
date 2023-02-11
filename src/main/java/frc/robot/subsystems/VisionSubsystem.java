@@ -12,9 +12,9 @@ public class VisionSubsystem extends SubsystemBase {
 
     private NetworkTable limeLight = NetworkTableInstance.getDefault().getTable("limelight-avis");
     private NetworkTableEntry pipeline = limeLight.getEntry("pipeline");
-    private double[] pos = new double[]{0, 0, 0, 0, 0, 0};
+    public double[] pos = new double[]{0, 0, 0, 0, 0, 0};
     private int id;
-    private boolean visible;
+    public boolean visible;
     private Field2d field2d = new Field2d();
 
     public VisionSubsystem() {

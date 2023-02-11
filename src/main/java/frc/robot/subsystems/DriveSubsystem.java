@@ -86,10 +86,10 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSteerOffset(Math.toRadians(-218.12008306874122))
                 .build();
 
-        Translation2d frontLeftWheel = new Translation2d(0.257, 0.2794);
-        Translation2d frontRightWheel = new Translation2d(0.257, -0.2794);
-        Translation2d backLeftWheel = new Translation2d(-0.257, 0.2794);
-        Translation2d backRightWheel = new Translation2d(-0.257, -0.2794);
+        Translation2d frontLeftWheel = new Translation2d(0.24765, 0.284);
+        Translation2d frontRightWheel = new Translation2d(0.24765, -0.284);
+        Translation2d backLeftWheel = new Translation2d(-0.24765, 0.284);
+        Translation2d backRightWheel = new Translation2d(-0.24765, -0.284);
 
         kinematics = new SwerveDriveKinematics(frontLeftWheel, frontRightWheel, backLeftWheel, backRightWheel);
 

@@ -1,25 +1,41 @@
 package frc.robot.commands;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PID;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
+
+    private PID pidAutoTurn = new PID(0.005, 0, 0, 10, 0.2, 2.5);
+    private AHRS gyro;
+
     public FieldOrientedDriveCommand(DriveSubsystem driveSubsystem) {
+        pidAutoTurn.setGoal(0);
+        gyro = driveSubsystem.gyro;
+
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
     }
 
     public void execute() {
         //switch to getXboxInput() to  use xbox controller
-        double[] input = getJoystickInput();
+        double[] input = getXboxInput();
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
+        if (Constants.cJoystick.getRawButton(3)) {
+            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], -pidAutoTurn.calculate(turnZero()), driveSubsystem.getRotation());
+            driveSubsystem.drive(speeds);
+        }
+        else {
+            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
+            driveSubsystem.drive(speeds);
+        }
 
-        driveSubsystem.drive(speeds);
     }
 
     public double[] getJoystickInput() {
@@ -54,5 +70,20 @@ public class FieldOrientedDriveCommand extends CommandBase {
         double[] xboxReturn = new double[] {xboxLeftY, xboxLeftX, xboxRightX};
 
         return xboxReturn;
+    }
+
+    public double turnZero() {
+        double gyroAngle = gyro.getAngle() % 360;
+        if (gyroAngle < 0) {
+            gyroAngle += 360;
+        }
+
+        if (gyroAngle > 180) {
+            gyroAngle -= 360;
+        } else if (gyroAngle < -180) {
+            gyroAngle += 360;
+        }
+
+        return gyroAngle;
     }
 }

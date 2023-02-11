@@ -37,6 +37,7 @@ public class RobotContainer
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
+    AutoAlignCommand autoAlignCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
 
@@ -60,6 +61,8 @@ public class RobotContainer
         }));
 
         Constants.autoBalance.whileTrue(autoBalanceCommand);
+
+        Constants.align.whileTrue(autoAlignCommand);
     }
     
     
