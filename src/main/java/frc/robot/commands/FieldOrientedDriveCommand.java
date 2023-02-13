@@ -27,14 +27,16 @@ public class FieldOrientedDriveCommand extends CommandBase {
         //switch to getXboxInput() to  use xbox controller
         double[] input = getJoystickInput();
 
-        if (Constants.cJoystick.getRawButton(3)) {
-            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], -pidAutoTurn.calculate(turnZero()), driveSubsystem.getRotation());
-            driveSubsystem.drive(speeds);
-        }
-        else {
-            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
-            driveSubsystem.drive(speeds);
-        }
+//        if (Constants.cJoystick.getRawButton(3)) {
+//            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], -pidAutoTurn.calculate(turnZero()), driveSubsystem.getRotation());
+//            driveSubsystem.drive(speeds);
+//        }
+//        else {
+//
+//        }
+
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
+        driveSubsystem.drive(speeds);
 
     }
 
