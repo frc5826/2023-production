@@ -51,11 +51,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getMastRad(){
-        return (getMastPosition() - cMastEncoderOffset) * (Math.PI / cArmClicksPerRotation);
+        return (getMastPosition() - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
     }
 
     public double getArmRad(){
-        return (getArmPosition() - cArmEncoderOffset) * (Math.PI / cArmClicksPerRotation);
+        return (getArmPosition() - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
     }
 
     public double getMastDeg(){

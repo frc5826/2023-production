@@ -6,6 +6,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -28,7 +30,7 @@ import static frc.robot.Constants.*;
 public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
-
+    PowerDistribution powerDistribution = new PowerDistribution(21, PowerDistribution.ModuleType.kCTRE);
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
     ArmSubsystem armSubsystem = new ArmSubsystem();
     VisionSubsystem visionSubsystem = new VisionSubsystem();
@@ -46,17 +48,19 @@ public class RobotContainer
 
     public RobotContainer()
     {
+        Shuffleboard.getTab("Arm").add(powerDistribution);
+
         // Configure the trigger bindings
         configureBindings();
-        CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armMoveCommand);
-        CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
+        CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armLockCommand);
+        //CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
     }
     
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings()
     {
-        trigger.whileTrue(armLockCommand);
+        trigger.whileTrue(armMoveCommand);
 
         Constants.zeroGyro.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();

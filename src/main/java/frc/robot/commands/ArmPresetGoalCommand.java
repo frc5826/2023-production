@@ -21,8 +21,8 @@ public class ArmPresetGoalCommand extends CommandBase {
         this.armSubsystem = armSubsystem;
         this.goal = new Point();
         this.goal.setCoords(goal);
-        this.mastPID = new PID(cArmP, cArmI, cArmD, 0.4, 0.4, 0.05);
-        this.armPID = new PID(cArmP, cArmI, cArmD, 0.4, 0.4, 0.05);
+        this.mastPID = new PID(cMastP, cMastI, cMastD, 0.4, 0.1, 0.05);
+        this.armPID = new PID(cArmP, cArmI, cArmD, 0.4, 0.1, 0.05);
         addRequirements(armSubsystem);
     }
 
@@ -34,8 +34,8 @@ public class ArmPresetGoalCommand extends CommandBase {
         mastGoalRad = armSubsystem.getCalculatedMastAngle();
         armGoalRad = armSubsystem.getCalculatedArmAngle();
 
-        mastPID.setGoal(armSubsystem.getMastRad());
-        armPID.setGoal(armSubsystem.getArmRad());
+        mastPID.setGoal(mastGoalRad);
+        armPID.setGoal(armGoalRad);
     }
 
     @Override

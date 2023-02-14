@@ -36,9 +36,13 @@ public class Constants {
     public static final double cArmEncoderMax = 0;
     public static final double cArmEncoderMin = 0;
 
-    public static final double cArmP = 0.1;
-    public static final double cArmI = 0;
-    public static final double cArmD = 0;
+    //TODO separate arm segment PID values
+    public static final double cMastP = 20;
+    public static final double cMastI = 0.5;
+    public static final double cMastD = 0;
+    public static final double cArmP = 0.9;
+    public static final double cArmI = 0.1;
+    public static final double cArmD = 0.5;
 
     public static final double cDriveSpeed = 8;
     public static final double cTurnSpeed = 1.5;
