@@ -6,9 +6,11 @@
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.commands.ArmLockCommand;
@@ -17,6 +19,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.GrabbinSubsystem;
+
+import java.util.HashMap;
+
 import static frc.robot.Constants.*;
 
 /**
@@ -76,7 +81,8 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        // TODO: Implement properly
+
+
         return driveSubsystem.followTrajectoryCommand(PathPlanner.loadPath("New Path", 1, 1));
     }
 }
