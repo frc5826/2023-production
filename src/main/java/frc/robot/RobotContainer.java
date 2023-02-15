@@ -9,6 +9,7 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -34,8 +35,8 @@ public class RobotContainer
 
 //  ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
 
-    ArmRepositionCommand moveMastFwdCommand = new ArmRepositionCommand(armSubsystem, 10, 0);
-    ArmRepositionCommand moveMastBkwCommand = new ArmRepositionCommand(armSubsystem, -10, 0);
+    ArmRepositionCommand moveMastFwdCommand = new ArmRepositionCommand(armSubsystem, -10, 0);
+    ArmRepositionCommand moveMastBkwCommand = new ArmRepositionCommand(armSubsystem, 10, 0);
     ArmRepositionCommand moveArmFwdCommand = new ArmRepositionCommand(armSubsystem, 0, 15);
     ArmRepositionCommand moveArmBkwCommand = new ArmRepositionCommand(armSubsystem, 0, -15);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
@@ -57,7 +58,7 @@ public class RobotContainer
 
         // Configure the trigger bindings
         configureBindings();
-        //CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
+        CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
     }
     
     
