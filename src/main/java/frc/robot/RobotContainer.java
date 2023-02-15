@@ -9,12 +9,9 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
-import frc.robot.commands.ArmLockCommand;
-import frc.robot.commands.ArmMoveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -35,8 +32,12 @@ public class RobotContainer
     ArmSubsystem armSubsystem = new ArmSubsystem();
     VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-    ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
-    ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
+//  ArmMoveCommand armMoveCommand = new ArmMoveCommand(armSubsystem);
+
+    ArmRepositionCommand moveMastFwdCommand = new ArmRepositionCommand(armSubsystem, 10, 0);
+    ArmRepositionCommand moveMastBkwCommand = new ArmRepositionCommand(armSubsystem, -10, 0);
+    ArmRepositionCommand moveArmFwdCommand = new ArmRepositionCommand(armSubsystem, 0, 15);
+    ArmRepositionCommand moveArmBkwCommand = new ArmRepositionCommand(armSubsystem, 0, -15);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
     AutoAlignCommand autoAlignCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem);
@@ -45,6 +46,10 @@ public class RobotContainer
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
+    JoystickButton button3 = new JoystickButton(cJoystick, 3);
+    JoystickButton button4 = new JoystickButton(cJoystick, 4);
+    JoystickButton button5 = new JoystickButton(cJoystick, 5);
+    JoystickButton button6 = new JoystickButton(cJoystick, 6);
 
     public RobotContainer()
     {
@@ -52,7 +57,6 @@ public class RobotContainer
 
         // Configure the trigger bindings
         configureBindings();
-        CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armLockCommand);
         //CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
     }
     
@@ -60,7 +64,12 @@ public class RobotContainer
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings()
     {
-        trigger.whileTrue(armMoveCommand);
+//        trigger.whileTrue(armMoveCommand);
+
+        button3.onTrue(moveMastBkwCommand);
+        button4.onTrue(moveArmBkwCommand);
+        button5.onTrue(moveMastFwdCommand);
+        button6.onTrue(moveArmFwdCommand);
 
         Constants.zeroGyro.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();

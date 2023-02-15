@@ -29,20 +29,23 @@ public class Constants {
     //TODO find important encoder values
     public static final int cMastEncoderID = 0;
     public static final int cArmEncoderID = 1;
+    public static final int cArmClicksPerRotation = 1;
     public static final double cMastEncoderOffset = 0.59111;
     public static final double cArmEncoderOffset = 0.18389;
-    public static final double cMastEncoderMax = 0;
-    public static final double cMastEncoderMin = 0;
-    public static final double cArmEncoderMax = 0;
-    public static final double cArmEncoderMin = 0;
+    public static final double cMastEncoderMax = (0.86 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    public static final double cMastEncoderMin = (0.732 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    public static final double cArmEncoderMax = (0.5 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    public static final double cArmEncoderMin = (0.23 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
 
     //TODO separate arm segment PID values
-    public static final double cMastP = 20;
+    public static final double cMastP = 10;
     public static final double cMastI = 0.5;
     public static final double cMastD = 0;
-    public static final double cArmP = 0.9;
-    public static final double cArmI = 0.1;
-    public static final double cArmD = 0.5;
+    public static final double cMastMaxSpeed = 0.4;
+    public static final double cArmP = 1.2;
+    public static final double cArmI = 0;
+    public static final double cArmD = 0.024;
+    public static final double cArmMaxSpeed = 0.4;
 
     public static final double cDriveSpeed = 8;
     public static final double cTurnSpeed = 1.5;
@@ -61,7 +64,6 @@ public class Constants {
 
     public static final double cBottomConeX = 22.75;
     public static final double cBottomConeY = 34;
-    public static final int cArmClicksPerRotation = 1;
 
 
     public static final Point cTopCone = new Point(39.75, 46);
