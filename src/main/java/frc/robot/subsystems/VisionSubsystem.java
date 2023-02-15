@@ -17,6 +17,13 @@ public class VisionSubsystem extends SubsystemBase {
     public boolean visible;
     private Field2d field2d = new Field2d();
 
+    private double[] comboPos = new double[]{0, 0};
+    private double[] savePos = new double[]{0, 0, 0, 0, 0, 0};
+    private double savePosX = 0;
+    private double savePosY = 0;
+
+    private int count = 0;
+
     public VisionSubsystem() {
         pipeline.setInteger(0);
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Vision");
@@ -25,13 +32,47 @@ public class VisionSubsystem extends SubsystemBase {
         shuffleboardTab.addNumber("Tag ID", () -> id);
         shuffleboardTab.addBoolean("Tag visible", () -> visible);
 
+        shuffleboardTab.addNumber("comboPosX", () -> comboPos[0]);
+        shuffleboardTab.addNumber("comboPosY", () -> comboPos[1]);
+        shuffleboardTab.addNumber("posX", () -> pos[0]);
+        shuffleboardTab.addNumber("posY", () -> pos[1]);
     }
 
     @Override
     public void periodic() {
         pos = limeLight.getEntry("botpose_wpiblue").getDoubleArray(new double[]{0, 0, 0, 0, 0, 0});
         id = (int) limeLight.getEntry("tid").getInteger(0);
-        visible = limeLight.getEntry("tv").getInteger(0) == 1;
 
+        //visible = limeLight.getEntry("tv").getInteger(0) == 1;
+
+        if (limeLight.getEntry("tv").getInteger(0) == 1 && id <= 8 && id > 0) {
+            count++;
+            if (count > 5) {
+                visible = limeLight.getEntry("tv").getInteger(0) == 1;
+            }
+        } else {
+            count = 0;
+            visible = false;
+        }
+
+        if (visible) {
+            savePos = pos;
+            savePosX = DriveSubsystem.odometry.getPoseMeters().getX();
+            savePosY = DriveSubsystem.odometry.getPoseMeters().getY();
+        }
+
+        getComboPos();
+    }
+
+    public void /*double[]*/ getComboPos() {
+        if (visible) {
+            comboPos[0] = pos[0];
+            comboPos[1] = pos[1];
+        } else {
+            comboPos[0] = savePos[0] - (DriveSubsystem.odometry.getPoseMeters().getX() - savePosX);
+            comboPos[1] = savePos[1] - (DriveSubsystem.odometry.getPoseMeters().getY() - savePosY);
+        }
+
+        //return comboPos;
     }
 }

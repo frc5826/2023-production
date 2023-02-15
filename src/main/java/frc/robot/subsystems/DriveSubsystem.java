@@ -27,7 +27,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveModule backRightModule;
 
     public SwerveDriveKinematics kinematics;
-    private final SwerveDriveOdometry odometry;
+    public static SwerveDriveOdometry odometry = null;
 
     private double gyroPitchOffset;
     private double gyroRollOffset;
@@ -154,18 +154,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command followTrajectoryCommand(PathPlannerTrajectory path) {
-        HashMap<String, Command> autoEventMap = new HashMap<>();
-        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
-        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
-
         return new SequentialCommandGroup(
                 new InstantCommand(() -> resetOdometry(path) ),
                 new PPSwerveControllerCommand(
-                        PathPlanner.loadPath("New Path", 5, 5),
+                        PathPlanner.loadPath("New Path", 1, 1),
                         odometry::getPoseMeters,
+                        new PIDController(1, 0, 0),
+                        new PIDController(1, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)
                         new PIDController(2, 0, 0),
-                        new PIDController(2, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)
-                        new PIDController(3, 0, 0),
                         this::drive,
                         true,
                         this)

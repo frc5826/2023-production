@@ -71,4 +71,6 @@ public class Constants {
     public static final int cSolenoidFWD = 1;
     public static final int cSolenoidREV = 0;
 
+    public static double[] yCoordDrop = new double[]{0.5, 1.0, 1.6, 2.2, 2.75, 3.3, 3.85, 4.4, 4.95};
+
 }

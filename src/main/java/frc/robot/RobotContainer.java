@@ -7,6 +7,7 @@ package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -81,8 +82,16 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
+        PathPlannerTrajectory path = PathPlanner.loadPath("New Path", 1, 1);
 
+        HashMap<String, Command> autoEventMap = new HashMap<>();
+        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
+        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
 
-        return driveSubsystem.followTrajectoryCommand(PathPlanner.loadPath("New Path", 1, 1));
+        return new FollowPathWithEvents(
+            driveSubsystem.followTrajectoryCommand(path),
+            path.getMarkers(),
+            autoEventMap
+        );
     }
 }

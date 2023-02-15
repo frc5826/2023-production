@@ -40,8 +40,6 @@ public class AutoAlignCommand extends CommandBase {
     @Override
     public void execute() {
 
-        System.out.println(pos);
-
         if (visionSubsystem.visible) {
             pos = visionSubsystem.pos;
         }
@@ -59,5 +57,9 @@ public class AutoAlignCommand extends CommandBase {
     public boolean isFinished() {
         return finished;
     }
+
+//    public double getTargetY() {
+//        double distance = Math.abs(Constants.yCoordDrop[0] - visionSubsystem.getComboPos()[1]);
+//    }
 
 }
