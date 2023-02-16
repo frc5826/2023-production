@@ -24,7 +24,7 @@ public class Constants {
     public static final int cTimeoutMs = 30;
 
     //TODO find upper arm value
-    public static final double[] cArmLengths = {41, 42.5};
+    public static final double[] cArmLengths = {41, 46};
 
     //TODO find important encoder values
     public static final int cMastEncoderID = 0;
@@ -65,16 +65,21 @@ public class Constants {
     public static final double cBottomConeX = 22.75;
     public static final double cBottomConeY = 34;
 
+    public static final double cArmBufferX = 7;
+    public static final double cArmBufferY = 7;
 
-    public static final Point cTopCone = new Point(39.75, 46);
-    public static final Point cTopCube = new Point(39.75, 35.5);
-    public static final Point cBottomCone = new Point(22.75, 34);
-    public static final Point cBottomCube = new Point(22.75, 23.5);
+    public static final Point cTestPoint = new Point(cArmLengths[0], cArmLengths[1]);
+    public static final Point cTopCone = new Point(39.75 + cArmBufferX, 46 + cArmBufferY);
+    public static final Point cTopCube = new Point(39.75, 35.5 + cArmBufferY);
+    public static final Point cMiddleCone = new Point(22.75 + cArmBufferX, 34 + cArmBufferY);
+    public static final Point cMiddleCube = new Point(22.75, 23.5 + cArmBufferY);
+
+    public static final Point cGroundPickup = new Point(5, 2);
+    public static final Point cGroundDropoff = new Point(6, 9);
     public static final Point cArmOrigin = new Point(-17, 10);
-    public static final double cArmBuffer = 7;
 
-    public static final int cCompresser = 11;
-    public static final int cSolenoidFWD = 1;
-    public static final int cSolenoidREV = 0;
+    public static final int cCompressor = 11;
+    public static final int cSolenoidFWD = 4;
+    public static final int cSolenoidREV = 7;
 
 }
