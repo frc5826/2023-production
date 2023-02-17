@@ -36,6 +36,8 @@ public class VisionSubsystem extends SubsystemBase {
         shuffleboardTab.addNumber("comboPosY", () -> comboPos[1]);
         shuffleboardTab.addNumber("posX", () -> pos[0]);
         shuffleboardTab.addNumber("posY", () -> pos[1]);
+
+        shuffleboardTab.addNumber("rotation x", () -> pos[5]);
     }
 
     @Override
@@ -61,10 +63,9 @@ public class VisionSubsystem extends SubsystemBase {
             savePosY = DriveSubsystem.odometry.getPoseMeters().getY();
         }
 
-        getComboPos();
     }
 
-    public void /*double[]*/ getComboPos() {
+    public double[] getComboPos() {
         if (visible) {
             comboPos[0] = pos[0];
             comboPos[1] = pos[1];
@@ -73,6 +74,6 @@ public class VisionSubsystem extends SubsystemBase {
             comboPos[1] = savePos[1] - (DriveSubsystem.odometry.getPoseMeters().getY() - savePosY);
         }
 
-        //return comboPos;
+        return comboPos;
     }
 }

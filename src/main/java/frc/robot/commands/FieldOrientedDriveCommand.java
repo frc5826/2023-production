@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,7 +26,13 @@ public class FieldOrientedDriveCommand extends CommandBase {
 
     public void execute() {
         //switch to getXboxInput() to  use xbox controller
-        double[] input = getJoystickInput();
+        double[] input = new double[3];
+        if (DriverStation.isJoystickConnected(0)) {
+            input = getJoystickInput();
+        } else {
+            input = getXboxInput();
+        }
+
 
 //        if (Constants.cJoystick.getRawButton(3)) {
 //            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], -pidAutoTurn.calculate(turnZero()), driveSubsystem.getRotation());

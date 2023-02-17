@@ -64,7 +64,12 @@ public class RobotContainer
     {
         trigger.whileTrue(armLockCommand);
 
-        Constants.zeroGyro.onTrue(new InstantCommand(() -> {
+        zeroGyroJoystick.onTrue(new InstantCommand(() -> {
+            driveSubsystem.zeroGyroYaw();
+            driveSubsystem.zeroGyroRollPitch();
+        }));
+
+        zeroGyroXbox.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();
             driveSubsystem.zeroGyroRollPitch();
         }));

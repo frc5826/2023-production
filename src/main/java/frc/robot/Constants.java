@@ -1,11 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.fabrik.Point;
 
 public class Constants {
+
+    {
+        DriverStation.isJoystickConnected(0);
+    }
 
     public static final Joystick cJoystick = new Joystick(0);
     public static final XboxController cXbox = new XboxController(1);
@@ -40,13 +45,14 @@ public class Constants {
     public static final double cArmI = 0;
     public static final double cArmD = 0;
 
-    public static final double cDriveSpeed = 8;
+    public static final double cDriveSpeed = 5;
     public static final double cTurnSpeed = 1.5;
 
-    public static Trigger zeroGyro = new Trigger(() -> cJoystick.getRawButtonPressed(8)); //cJoystick.getRawButtonPressed(8));
+    public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getBButtonPressed());
+    public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
 
     public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
-    public static Trigger align = new Trigger(() -> cJoystick.getRawButton(12));
+    public static Trigger align = new Trigger(() -> cXbox.getAButton());
     public static final int cArmEncoderClicks = 1;
 
     public static final double cTopConeX = 39.75;
