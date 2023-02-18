@@ -6,6 +6,12 @@
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -18,6 +24,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.GrabbinSubsystem;
+
+import java.util.HashMap;
+
 import static frc.robot.Constants.*;
 
 /**
@@ -50,7 +59,8 @@ public class RobotContainer
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
-    AutoAlignCommand autoAlignCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem);
+    AutoAlignCommand autoAlignCubeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, true);
+    AutoAlignCommand autoAlignConeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, false);
 
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem);
@@ -62,13 +72,20 @@ public class RobotContainer
     JoystickButton button6 = new JoystickButton(cJoystick, 6);
     JoystickButton button10 = new JoystickButton(cJoystick, 10);
 
+    private UsbCamera camera;
+
     public RobotContainer()
     {
+        //TODO can use System.getenv("serialnum") to get the rio, practice robot: 031c007a
         Shuffleboard.getTab("Arm").add(powerDistribution);
 
         // Configure the trigger bindings
         configureBindings();
         CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
+
+        camera = CameraServer.startAutomaticCapture();
+        camera.setResolution(320, 240);
+        camera.setFPS(20);
     }
     
     
@@ -90,14 +107,22 @@ public class RobotContainer
         commandTab.add("Ground Pickup Command", groundPickupCommand);
         commandTab.add("Ground Dropoff Command", groundDropoffCommand);
 
-        Constants.zeroGyro.onTrue(new InstantCommand(() -> {
+        zeroGyroJoystick.onTrue(new InstantCommand(() -> {
+            driveSubsystem.zeroGyroYaw();
+            driveSubsystem.zeroGyroRollPitch();
+        }));
+
+        zeroGyroXbox.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();
             driveSubsystem.zeroGyroRollPitch();
         }));
 
         Constants.autoBalance.whileTrue(autoBalanceCommand);
 
-        Constants.align.whileTrue(autoAlignCommand);
+        PanelButtons[2].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {}, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+
+        PanelButtons[0].whileTrue(autoAlignCubeCommand);
+        PanelButtons[1].whileTrue(autoAlignConeCommand);
     }
     
     
@@ -108,7 +133,16 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        // TODO: Implement properly
-        return driveSubsystem.followTrajectoryCommand(PathPlanner.loadPath("New Path", 1, 1));
+        PathPlannerTrajectory path = PathPlanner.loadPath("New Path", 1, 1);
+
+        HashMap<String, Command> autoEventMap = new HashMap<>();
+        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
+        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
+
+        return new FollowPathWithEvents(
+            driveSubsystem.followTrajectoryCommand(path),
+            path.getMarkers(),
+            autoEventMap
+        );
     }
 }

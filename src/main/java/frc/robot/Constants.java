@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Joystick;
@@ -11,6 +12,20 @@ public class Constants {
 
     public static final Joystick cJoystick = new Joystick(0);
     public static final XboxController cXbox = new XboxController(1);
+
+    public static final Joystick cButtonPanel = new Joystick(2);
+
+    public static final Trigger[] PanelButtons;
+
+    static {
+        PanelButtons = new Trigger[11];
+
+        for(int i = 0; i<11; i++) {
+            int finalI = i+1;
+            PanelButtons[i] = new Trigger(() -> cButtonPanel.getRawButton(finalI));
+        }
+    }
+
     public static final double cJoystickMin = 0.1;
     public static final double cXboxMin = 0.15;
 
@@ -49,13 +64,14 @@ public class Constants {
     public static final double cArmD = 0.024;
     public static final double cArmMaxSpeed = 0.4;
 
-    public static final double cDriveSpeed = 8;
+    public static final double cDriveSpeed = 5;
     public static final double cTurnSpeed = 1.5;
 
-    public static Trigger zeroGyro = new Trigger(() -> cJoystick.getRawButtonPressed(8)); //cJoystick.getRawButtonPressed(8));
+    public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getBButtonPressed());
+    public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
 
     public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
-    public static Trigger align = new Trigger(() -> cJoystick.getRawButton(12));
+    public static Trigger align = new Trigger(() -> cXbox.getAButton());
     public static final int cArmEncoderClicks = 1;
 
     public static final double cTopConeX = 39.75;
@@ -105,5 +121,7 @@ public class Constants {
     public static final String cCompetitionSerialNumber = "";
 
     public static final String cTestSerialNumber = "";
+
+    public static double[] yCoordDrop = new double[]{0.5, 1.0, 1.6, 2.2, 2.75, 3.3, 3.85, 4.4, 4.95};
 
 }

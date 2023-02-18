@@ -1,8 +1,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PID;
 import frc.robot.subsystems.VisionSubsystem;
@@ -14,39 +16,67 @@ public class AutoAlignCommand extends CommandBase {
 
     private boolean finished = false;
 
-    private double[] pos = new double[]{0, 0, 0, 0, 0, 0};
-    private double xGoal = 1.85;
-    private double zGoal = 1;
+    private double[] pos = new double[]{0, 0/*, 0, 0, 0, 0*/};
+    private double xGoal = 0;
+    private double zGoal = 0;
 
-    private PID pidz = new PID(.5, 0, 0, 0.7, 0.15, 0.1);
-    private PID pidx = new PID(.4, 0, 0, 0.5, 0.15, 0.1);
+    private PID pidy = new PID(1.5, 0, 0.015, 1, 0, 0.005);
+    private PID pidx = new PID(1.5, 0, 0.015, 0.7, 0, 0.005);
     private PID pidTurn = new PID(.4, 0, 0, 0.5, 0.15, 0.1);
 
-    public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
-        pidz.setGoal(zGoal);
-        pidx.setGoal(xGoal);
+    private double[] cubegoalY = new double[]{1, 2.75, 4.4};
+    private double[] conegoalY = new double[]{0.5, 1.6, 2.2, 3.3, 3.85, 4.95};
+    private double targetY;
+    private double targetX;
+
+    private boolean iscube;
+
+    public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean iscube) {
+        pidx.setGoal(targetX);
+        pidy.setGoal(targetY);
         pidTurn.setGoal(0); //might be wrong if on the other side of field
 
         this.driveSubsystem = driveSubsystem;
         this.visionSubsystem = visionSubsystem;
         addRequirements(driveSubsystem, visionSubsystem);
+
+        //ShuffleboardTab Tab = Shuffleboard.getTab("Vision");
+        //Tab.addNumber("TargetX", () -> targetX);
+        //Tab.addNumber("TargetY", () -> targetY);
+        //Tab.addNumber("PIDY", pidy::getError);
+        //Tab.addNumber("PIDX", pidx::getError);
+
+        this.iscube = iscube;
     }
 
     @Override
     public void initialize() {
+        if (iscube) {
+            targetY = getClosestGoal(cubegoalY);
+        }else{
+            targetY = getClosestGoal(conegoalY);
+        }
+
+        if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
+            targetX = 1.8;
+        } else {
+            targetX = 14.75;
+        }
+
+        pidx.setGoal(targetX);
+        pidy.setGoal(targetY);
+
         finished = false;
     }
 
     @Override
     public void execute() {
 
-        System.out.println(pos);
+        System.out.println("current goal: " + targetX + ", " + targetY);
 
-        if (visionSubsystem.visible) {
-            pos = visionSubsystem.pos;
-        }
+        pos = visionSubsystem.getComboPos();
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(-pidx.calculate(pos[0]), -pidz.calculate(pos[1]), 0 /* pidTurn.calculate(pos[3]) */, driveSubsystem.getRotation());
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(pidx.calculate(pos[0]), pidy.calculate(pos[1]), 0 /*pidTurn.calculate(visionSubsystem.pos[5])*/, driveSubsystem.getRotation());
         driveSubsystem.drive(speeds);
 
         if (pos[1] < zGoal + 0.05 && pos[1] > zGoal - 0.05 && pos[0] < xGoal + 0.05 && pos[0] > xGoal - 0.05) {
@@ -58,6 +88,25 @@ public class AutoAlignCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return finished;
+    }
+
+//    public double getTargetY() {
+//        double distance = Math.abs(Constants.yCoordDrop[0] - visionSubsystem.getComboPos()[1]);
+//    }
+
+    public double getClosestGoal(double[] goalY) {
+        double y = visionSubsystem.getComboPos()[1];
+        double distance = 10;
+        double yeah = y;
+
+        for (int i = 0; i < goalY.length; i++) {
+            if (Math.abs(goalY[i] - y) < distance) {
+                distance = Math.abs(goalY[i] - y);
+                yeah = goalY[i];
+            }
+        }
+
+        return yeah;
     }
 
 }
