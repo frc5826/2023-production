@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -81,5 +83,27 @@ public class Constants {
     public static final int cCompressor = 11;
     public static final int cSolenoidFWD = 4;
     public static final int cSolenoidREV = 7;
+
+    public static final double[] cCompetitionOffsets = {
+            66.248149628112955 + 180,
+            250.7614831463437 + 180,
+            307.4751996023543 + 180,
+            333.896484375 + 180
+    };
+
+    public static final double[] cTestOffsets = {
+
+    };
+
+    public static final SwerveDriveKinematics cCompetitionKinematics =
+            new SwerveDriveKinematics(
+                    new Translation2d(0.24765, 0.284),
+                    new Translation2d(0.24765, -0.284),
+                    new Translation2d(-0.24765, 0.284),
+                    new Translation2d(-0.24765, -0.284));
+
+    public static final String cCompetitionSerialNumber = "";
+
+    public static final String cTestSerialNumber = "";
 
 }
