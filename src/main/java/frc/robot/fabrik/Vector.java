@@ -27,6 +27,12 @@ public class Vector {
         terminal.setCoords(terminal.getXRelative(initial) * length + initial.getX(), terminal.getYRelative(initial) * length + initial.getY());
     }
 
+    public Vector getInverted(){
+        Vector v = new Vector(terminal, initial);
+        v.setLength(-v.getMagnitude());
+        return v;
+    }
+
     public double getMagnitude(){
         return Math.sqrt(Math.pow(terminal.getXRelative(initial), 2) + Math.pow(terminal.getYRelative(initial), 2));
     }

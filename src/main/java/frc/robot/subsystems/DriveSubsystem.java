@@ -49,10 +49,17 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSize(2, 2)
                 .withPosition(0, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
+
                 .withDriveMotor(MotorType.NEO, 2)
                 .withSteerMotor(MotorType.NEO, 1)
-                .withSteerEncoderPort(51)
+                .withSteerEncoderPort(53)
                 .withSteerOffset(Math.toRadians(-230.41227889536478))
+=======
+                .withDriveMotor(MotorType.NEO, 6)
+                .withSteerMotor(MotorType.NEO, 5)
+                .withSteerEncoderPort(53)
+                .withSteerOffset(Math.toRadians(-66.248149628112955))
+
                 .build();
 
         frontRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
@@ -71,8 +78,13 @@ public class DriveSubsystem extends SubsystemBase {
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
                 .withDriveMotor(MotorType.NEO, 8)
                 .withSteerMotor(MotorType.NEO, 7)
-                .withSteerEncoderPort(50)
+
+                .withSteerEncoderPort(52)
                 .withSteerOffset(Math.toRadians(-204.20735655964043 - 180))
+=======
+                .withSteerEncoderPort(52)
+                .withSteerOffset(Math.toRadians(-307.4751996023543 - 180))
+
                 .build();
 
         backRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)

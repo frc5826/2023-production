@@ -103,7 +103,7 @@ public class Arm2Segment {
     }
 
     public double getArmMiddleAngle(){
-        return armSegToVector(0).getAngleBetweenOther(armSegToVector(1));
+        return armSegToVector(0).getAngleBetweenOther(armSegToVector(1).getInverted());
     }
 
     public double getArmBaseAngle(){

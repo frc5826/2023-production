@@ -11,7 +11,8 @@ public class GrabbinSubsystem extends SubsystemBase {
     private DoubleSolenoid solenoid;
 
     public GrabbinSubsystem(){
-        solenoid = new DoubleSolenoid(cCompresser ,PneumaticsModuleType.CTREPCM, cSolenoidFWD, cSolenoidREV);
+        solenoid = new DoubleSolenoid(cCompressor,PneumaticsModuleType.CTREPCM, cSolenoidFWD, cSolenoidREV);
+        solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     public void extend(){
