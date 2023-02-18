@@ -39,7 +39,7 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
     PowerDistribution powerDistribution = new PowerDistribution(21, PowerDistribution.ModuleType.kCTRE);
-    private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+    private final DriveSubsystem driveSubsystem;
     ArmSubsystem armSubsystem = new ArmSubsystem();
     VisionSubsystem visionSubsystem = new VisionSubsystem();
 
@@ -56,6 +56,14 @@ public class RobotContainer
     ArmPresetPositionCommand middleConeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCone);
     ArmPresetPositionCommand groundPickupCommand = new ArmPresetPositionCommand(armSubsystem, cGroundPickup);
     ArmPresetPositionCommand groundDropoffCommand = new ArmPresetPositionCommand(armSubsystem, cGroundDropoff);
+
+    {
+        if (System.getenv("serialnum").equals(cTestSerialNumber)) {
+            driveSubsystem = new DriveSubsystem(cTestKinematics, cTestOffsets, cTestSpeedControllers);
+        } else {
+            driveSubsystem = new DriveSubsystem(cCompetitionKinematics, cCompetitionOffsets, cCompetitionSpeedControllers);
+        }
+    }
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
@@ -76,7 +84,6 @@ public class RobotContainer
 
     public RobotContainer()
     {
-        //TODO can use System.getenv("serialnum") to get the rio, practice robot: 031c007a
         Shuffleboard.getTab("Arm").add(powerDistribution);
 
         // Configure the trigger bindings

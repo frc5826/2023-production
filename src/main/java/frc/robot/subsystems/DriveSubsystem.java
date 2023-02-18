@@ -34,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
-    public DriveSubsystem() {
+    public DriveSubsystem(SwerveDriveKinematics kinematics, double[] offsets, int[] speedControllers) {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
 
         /* How to adjust steer offsets:
@@ -49,60 +49,43 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSize(2, 2)
                 .withPosition(0, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-
-                .withDriveMotor(MotorType.NEO, 2)
-                .withSteerMotor(MotorType.NEO, 1)
-                .withSteerEncoderPort(53)
-                .withSteerOffset(Math.toRadians(-230.41227889536478))
-=======
-                .withDriveMotor(MotorType.NEO, 6)
-                .withSteerMotor(MotorType.NEO, 5)
-                .withSteerEncoderPort(53)
-                .withSteerOffset(Math.toRadians(-66.248149628112955))
-
+                .withDriveMotor(MotorType.NEO, speedControllers[0])
+                .withSteerMotor(MotorType.NEO, speedControllers[1])
+                .withSteerEncoderPort(50)
+                .withSteerOffset(Math.toRadians(-offsets[0]))
                 .build();
 
         frontRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(2, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, 4)
-                .withSteerMotor(MotorType.NEO, 3)
-                .withSteerEncoderPort(49)
-                .withSteerOffset(Math.toRadians(-224.6574620290355 - 180))
-                .build();
-
-        backLeftModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
-                        .withSize(2, 2)
-                        .withPosition(4, 0))
-                .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, 8)
-                .withSteerMotor(MotorType.NEO, 7)
-
-                .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-204.20735655964043 - 180))
-=======
-                .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-307.4751996023543 - 180))
-
+                .withDriveMotor(MotorType.NEO, speedControllers[2])
+                .withSteerMotor(MotorType.NEO, speedControllers[3])
+                .withSteerEncoderPort(51)
+                .withSteerOffset(Math.toRadians(-offsets[1]))
                 .build();
 
         backRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
-                        .withPosition(6, 0))
-                .withGearRatio(MK4Inverted)
-                .withDriveMotor(MotorType.NEO, 6)
-                .withSteerMotor(MotorType.NEO, 5)
+                        .withPosition(4, 0))
+                .withGearRatio(SdsModuleConfigurations.MK4_L1)
+                .withDriveMotor(MotorType.NEO, speedControllers[4])
+                .withSteerMotor(MotorType.NEO, speedControllers[5])
                 .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-13.35937500000003))
+                .withSteerOffset(Math.toRadians(-offsets[2]))
                 .build();
 
-        Translation2d frontLeftWheel = new Translation2d(0.257, 0.2794);
-        Translation2d frontRightWheel = new Translation2d(0.257, -0.2794);
-        Translation2d backLeftWheel = new Translation2d(-0.257, 0.2794);
-        Translation2d backRightWheel = new Translation2d(-0.257, -0.2794);
+        backLeftModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                        .withSize(2, 2)
+                        .withPosition(6, 0))
+                .withGearRatio(SdsModuleConfigurations.MK4_L1)
+                .withDriveMotor(MotorType.NEO, speedControllers[6])
+                .withSteerMotor(MotorType.NEO, speedControllers[7])
+                .withSteerEncoderPort(53)
+                .withSteerOffset(Math.toRadians(-offsets[3]))
+                .build();
 
-        kinematics = new SwerveDriveKinematics(frontLeftWheel, frontRightWheel, backLeftWheel, backRightWheel);
+        this.kinematics = kinematics;
 
         odometry = new SwerveDriveOdometry(
                 kinematics,

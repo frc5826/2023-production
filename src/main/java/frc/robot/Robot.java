@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.WPI_CallbackHelper;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.hal.simulation.RoboRioDataJNI;
@@ -31,9 +33,9 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-        // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+        //Zeros the Cancoders:
+        for(int i=50;i<54;i++) new WPI_CANCoder(50).setPositionToAbsolute();
     }
 
     @Override

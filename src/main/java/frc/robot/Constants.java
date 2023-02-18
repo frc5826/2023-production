@@ -108,7 +108,10 @@ public class Constants {
     };
 
     public static final double[] cTestOffsets = {
-
+            57.30468749999999,
+            0,
+            0,
+            0
     };
 
     public static final SwerveDriveKinematics cCompetitionKinematics =
@@ -116,12 +119,25 @@ public class Constants {
                     new Translation2d(0.24765, 0.284),
                     new Translation2d(0.24765, -0.284),
                     new Translation2d(-0.24765, 0.284),
-                    new Translation2d(-0.24765, -0.284));
+                    new Translation2d(-0.24765, -0.284)
+            );
+
+    public static final SwerveDriveKinematics cTestKinematics =
+            new SwerveDriveKinematics(
+                    new Translation2d(0.2508, 0.284),
+                    new Translation2d(0.2508, -0.284),
+                    new Translation2d(-0.2508, 0.284),
+                    new Translation2d(-0.2508, -0.284)
+            );
 
     public static final String cCompetitionSerialNumber = "";
 
-    public static final String cTestSerialNumber = "";
+    public static final String cTestSerialNumber = "031c007a";
 
     public static double[] yCoordDrop = new double[]{0.5, 1.0, 1.6, 2.2, 2.75, 3.3, 3.85, 4.4, 4.95};
+
+    public static int[] cCompetitionSpeedControllers = {6, 5, 4, 3, 2, 1, 8, 7};
+
+    public static int[] cTestSpeedControllers = {2, 1, 4, 3, 6, 5, 8, 7};
 
 }
