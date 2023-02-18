@@ -78,11 +78,11 @@ public class DriveSubsystem extends SubsystemBase {
         backRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(6, 0))
-                .withGearRatio(SdsModuleConfigurations.MK4_L1)
+                .withGearRatio(MK4Inverted)
                 .withDriveMotor(MotorType.NEO, 6)
                 .withSteerMotor(MotorType.NEO, 5)
                 .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-217.81338025425097 - 180))
+                .withSteerOffset(Math.toRadians(-13.35937500000003))
                 .build();
 
         Translation2d frontLeftWheel = new Translation2d(0.257, 0.2794);

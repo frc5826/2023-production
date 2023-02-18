@@ -8,12 +8,22 @@ import frc.robot.fabrik.Point;
 
 public class Constants {
 
-    {
-        DriverStation.isJoystickConnected(0);
-    }
-
     public static final Joystick cJoystick = new Joystick(0);
     public static final XboxController cXbox = new XboxController(1);
+
+    public static final Joystick cButtonPanel = new Joystick(2);
+
+    public static final Trigger[] PanelButtons;
+
+    static {
+        PanelButtons = new Trigger[11];
+
+        for(int i = 0; i<11; i++) {
+            int finalI = i+1;
+            PanelButtons[i] = new Trigger(() -> cButtonPanel.getRawButton(finalI));
+        }
+    }
+
     public static final double cJoystickMin = 0.1;
     public static final double cXboxMin = 0.15;
 

@@ -25,7 +25,7 @@ public class VisionSubsystem extends SubsystemBase {
     private int count = 0;
 
     public VisionSubsystem() {
-        pipeline.setInteger(0);
+        pipeline.setDouble(0);
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Vision");
 
         shuffleboardTab.addDoubleArray("Robot pos", () -> pos);
@@ -63,17 +63,23 @@ public class VisionSubsystem extends SubsystemBase {
             savePosY = DriveSubsystem.odometry.getPoseMeters().getY();
         }
 
+        setComboPos();
+
     }
 
     public double[] getComboPos() {
+
+        return comboPos;
+    }
+
+    private void setComboPos() {
         if (visible) {
             comboPos[0] = pos[0];
             comboPos[1] = pos[1];
         } else {
-            comboPos[0] = savePos[0] - (DriveSubsystem.odometry.getPoseMeters().getX() - savePosX);
-            comboPos[1] = savePos[1] - (DriveSubsystem.odometry.getPoseMeters().getY() - savePosY);
+            comboPos[0] = savePos[0] + (DriveSubsystem.odometry.getPoseMeters().getX() - savePosX);
+            comboPos[1] = savePos[1] + (DriveSubsystem.odometry.getPoseMeters().getY() - savePosY);
         }
 
-        return comboPos;
     }
 }

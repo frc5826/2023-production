@@ -8,10 +8,10 @@ package frc.robot;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.commands.ArmLockCommand;
@@ -43,19 +43,29 @@ public class RobotContainer
     ArmLockCommand armLockCommand = new ArmLockCommand(armSubsystem);
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
-    AutoAlignCommand autoAlignCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem);
+    AutoAlignCommand autoAlignCubeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, true);
+    AutoAlignCommand autoAlignConeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, false);
 
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
 
+    private UsbCamera camera;
+
     public RobotContainer()
     {
+
+        //TODO can use System.getenv("serialnum") to get the rio, practice robot: 031c007a
+
         // Configure the trigger bindings
         configureBindings();
         CommandScheduler.getInstance().setDefaultCommand(armSubsystem, armMoveCommand);
         CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
+
+        camera = CameraServer.startAutomaticCapture();
+        camera.setResolution(320, 240);
+        camera.setFPS(20);
     }
     
     
@@ -76,7 +86,10 @@ public class RobotContainer
 
         Constants.autoBalance.whileTrue(autoBalanceCommand);
 
-        Constants.align.whileTrue(autoAlignCommand);
+        PanelButtons[2].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {}, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+
+        PanelButtons[0].whileTrue(autoAlignCubeCommand);
+        PanelButtons[1].whileTrue(autoAlignConeCommand);
     }
     
     
