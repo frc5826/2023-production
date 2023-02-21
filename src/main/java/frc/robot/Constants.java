@@ -73,6 +73,9 @@ public class Constants {
     public static final double cTurnSpeed = 1.5;
 
     public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getBButtonPressed());
+
+    public static Trigger vibrateXbox = new Trigger(() -> cXbox.getRightBumperPressed());
+
     public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
 
     public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
@@ -113,10 +116,10 @@ public class Constants {
     };
 
     public static final double[] cTestOffsets = {
-            57.30468749999999,
-            0,
-            0,
-            0
+            47.81249999999999 + 180,
+            47.900390625,
+            193.447265625,
+            202.41210937500003 + 180
     };
 
     public static final SwerveDriveKinematics cCompetitionKinematics =

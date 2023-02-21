@@ -108,6 +108,14 @@ public class DriveSubsystem extends SubsystemBase {
         );
     }
 
+    public void invertGyroYaw() {
+        odometry.resetPosition(
+                Rotation2d.fromDegrees(-gyro.getFusedHeading() + 180),
+                new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition() },
+                new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0))
+        );
+    }
+
     public Rotation2d getRotation() {
         return odometry.getPoseMeters().getRotation();
     }
