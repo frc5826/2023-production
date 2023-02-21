@@ -49,7 +49,7 @@ public class Constants {
     public static final int cArmClicksPerRotation = 1;
     public static final double cMastEncoderOffset = 0.59111;
     public static final double cArmEncoderOffset = 0.519; //19
-    public static final double cMastEncoderMax = (0.865 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    public static final double cMastEncoderMax = (0.867 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
     public static final double cMastEncoderMin = (0.732 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
 
     //public static final double cArmEncoderMax = (0.5 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
@@ -64,9 +64,9 @@ public class Constants {
     public static final double cMastI = 0.5;
     public static final double cMastD = 0;
     public static final double cMastMaxSpeed = 0.4;
-    public static final double cArmP = 1.2;
+    public static final double cArmP = 3;
     public static final double cArmI = 0;
-    public static final double cArmD = 0.024;
+    public static final double cArmD = 0;
     public static final double cArmMaxSpeed = 0.4;
 
     public static final double cDriveSpeed = 5;

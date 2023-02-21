@@ -42,8 +42,7 @@ public class ArmSubsystem extends SubsystemBase {
         armEncoder = new DutyCycleEncoder(cArmEncoderID);
 
         mastPID = new PIDController(cMastP, cMastI, cMastD);
-        //armPID = new PIDController(cArmP, cArmI, cArmD);
-        armPID = new PIDController(3, 0, 0);
+        armPID = new PIDController(cArmP, cArmI, cArmD);
 
         setMastTargetRad(cMastEncoderMax);
         setArmTargetRad(cArmEncoderMin);
@@ -74,6 +73,10 @@ public class ArmSubsystem extends SubsystemBase {
         super.periodic();
         mastSpeed = mastPID.calculate(getMastRad());
         armSpeed = armPID.calculate(getArmRad());
+
+        if (Math.abs(this.getMastRad() - cMastEncoderMax) < Math.PI / 36) {
+            mastSpeed = Math.min(0, mastSpeed);
+        }
 
         setMastSpeed(mastSpeed);
         setArmSpeed(armSpeed);
