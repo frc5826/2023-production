@@ -18,9 +18,9 @@ public class Constants {
     public static final Trigger[] PanelButtons;
 
     static {
-        PanelButtons = new Trigger[11];
+        PanelButtons = new Trigger[12];
 
-        for(int i = 0; i<11; i++) {
+        for(int i = 0; i < PanelButtons.length; i++) {
             int finalI = i+1;
             PanelButtons[i] = new Trigger(() -> cButtonPanel.getRawButton(finalI));
         }
@@ -72,7 +72,7 @@ public class Constants {
     public static final double cDriveSpeed = 5;
     public static final double cTurnSpeed = 1.5;
 
-    public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getBButtonPressed());
+    public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getStartButtonPressed());
 
     public static Trigger vibrateXbox = new Trigger(() -> cXbox.getRightBumperPressed());
 

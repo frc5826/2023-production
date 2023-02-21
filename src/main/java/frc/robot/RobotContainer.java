@@ -108,13 +108,21 @@ public class RobotContainer
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
-        trigger.onTrue(grabbinCommand);
         button3.onTrue(moveMastBkwCommand);
         button4.onTrue(moveArmBkwCommand);
         button5.onTrue(moveMastFwdCommand);
         button6.onTrue(moveArmFwdCommand);
 
-        button10.onTrue(topCubeCommand);
+        PanelButtons[0].onTrue(groundPickupCommand);
+        PanelButtons[1].onTrue(groundDropoffCommand);
+        PanelButtons[2].onTrue(topConeCommand);
+        PanelButtons[3].onTrue(middleConeCommand);
+        PanelButtons[4].whileTrue(autoAlignConeCommand);
+        PanelButtons[7].onTrue(grabbinCommand);
+        PanelButtons[8].onTrue(topCubeCommand);
+        PanelButtons[9].onTrue(middleCubeCommand);
+        PanelButtons[10].whileTrue(autoAlignCubeCommand);
+
 
         commandTab.add("Top Cube Command", topCubeCommand);
         commandTab.add("Top Cone Command", topConeCommand);
@@ -133,19 +141,17 @@ public class RobotContainer
             driveSubsystem.zeroGyroRollPitch();
         }));
 
-        vibrateXbox.onTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
-        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
-
-        Constants.autoBalance.whileTrue(autoBalanceCommand);
-
-        PanelButtons[4].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
-        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
-
-        PanelButtons[0].whileTrue(autoAlignCubeCommand);
-        PanelButtons[1].whileTrue(autoAlignConeCommand);
-
-        PanelButtons[2].whileTrue(new InstantCommand(driveSubsystem::invertGyroYaw));
-        PanelButtons[3].whileTrue(new InstantCommand(driveSubsystem::zeroGyroYaw));
+//        vibrateXbox.onTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
+//        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+//
+//        Constants.autoBalance.whileTrue(autoBalanceCommand);
+//
+//        PanelButtons[4].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
+//        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+//
+//
+//        PanelButtons[2].whileTrue(new InstantCommand(driveSubsystem::invertGyroYaw));
+//        PanelButtons[3].whileTrue(new InstantCommand(driveSubsystem::zeroGyroYaw));
 
     }
     
