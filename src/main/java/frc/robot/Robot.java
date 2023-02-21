@@ -35,7 +35,7 @@ public class Robot extends TimedRobot
     {
         robotContainer = new RobotContainer();
         //Zeros the Cancoders:
-        for(int i=50;i<54;i++) new WPI_CANCoder(50).setPositionToAbsolute();
+        for(int i=50;i<54;i++) new WPI_CANCoder(i).setPositionToAbsolute();
     }
 
     @Override

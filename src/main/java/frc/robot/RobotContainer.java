@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -44,6 +45,8 @@ public class RobotContainer
     VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     ShuffleboardTab commandTab = Shuffleboard.getTab("Commands");
+
+    SendableChooser<Command> comboBox = new SendableChooser<Command>();
 
     ArmRepositionCommand moveMastFwdCommand = new ArmRepositionCommand(armSubsystem, -10, 0);
     ArmRepositionCommand moveMastBkwCommand = new ArmRepositionCommand(armSubsystem, 10, 0);
@@ -86,6 +89,13 @@ public class RobotContainer
     {
         Shuffleboard.getTab("Arm").add(powerDistribution);
 
+        comboBox.addOption("Zero Gyro", new InstantCommand(driveSubsystem::zeroGyroYaw));
+        comboBox.addOption("Invert Gyro", new InstantCommand(driveSubsystem::invertGyroYaw));
+
+        commandTab.add("Command Chooser", comboBox);
+
+        comboBox.getSelected();
+
         // Configure the trigger bindings
         configureBindings();
         CommandScheduler.getInstance().setDefaultCommand(driveSubsystem, fieldOrientedDriveCommand);
@@ -97,8 +107,7 @@ public class RobotContainer
     
     
     /** Use this method to define your trigger->command mappings. */
-    private void configureBindings()
-    {
+    private void configureBindings() {
         trigger.onTrue(grabbinCommand);
         button3.onTrue(moveMastBkwCommand);
         button4.onTrue(moveArmBkwCommand);
@@ -124,12 +133,20 @@ public class RobotContainer
             driveSubsystem.zeroGyroRollPitch();
         }));
 
+        vibrateXbox.onTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
+        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+
         Constants.autoBalance.whileTrue(autoBalanceCommand);
 
-        PanelButtons[2].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {}, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
+        PanelButtons[4].whileTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
+        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
 
         PanelButtons[0].whileTrue(autoAlignCubeCommand);
         PanelButtons[1].whileTrue(autoAlignConeCommand);
+
+        PanelButtons[2].whileTrue(new InstantCommand(driveSubsystem::invertGyroYaw));
+        PanelButtons[3].whileTrue(new InstantCommand(driveSubsystem::zeroGyroYaw));
+
     }
     
     
@@ -140,16 +157,18 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        PathPlannerTrajectory path = PathPlanner.loadPath("New Path", 1, 1);
+        //PathPlannerTrajectory path = PathPlanner.loadPath("New Path", 1, 1);
 
-        HashMap<String, Command> autoEventMap = new HashMap<>();
-        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
-        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
+        //HashMap<String, Command> autoEventMap = new HashMap<>();
+//        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
+//        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
+//
+//        return new FollowPathWithEvents(
+//            driveSubsystem.followTrajectoryCommand(path),
+//            path.getMarkers(),
+//            autoEventMap
+//        );
 
-        return new FollowPathWithEvents(
-            driveSubsystem.followTrajectoryCommand(path),
-            path.getMarkers(),
-            autoEventMap
-        );
+        return comboBox.getSelected();
     }
 }

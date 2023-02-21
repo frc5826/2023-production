@@ -22,7 +22,7 @@ public class AutoAlignCommand extends CommandBase {
 
     private PID pidy = new PID(1.5, 0, 0.015, 1, 0, 0.005);
     private PID pidx = new PID(1.5, 0, 0.015, 0.7, 0, 0.005);
-    private PID pidTurn = new PID(.4, 0, 0, 0.5, 0.15, 0.1);
+    private PID pidTurn = new PID(0.1, 0, 0.004, 2, 0, 1);
 
     private double[] cubegoalY = new double[]{1, 2.75, 4.4};
     private double[] conegoalY = new double[]{0.5, 1.6, 2.2, 3.3, 3.85, 4.95};
@@ -76,7 +76,13 @@ public class AutoAlignCommand extends CommandBase {
 
         pos = visionSubsystem.getComboPos();
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(pidx.calculate(pos[0]), pidy.calculate(pos[1]), 0 /*pidTurn.calculate(visionSubsystem.pos[5])*/, driveSubsystem.getRotation());
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
+                pidx.calculate(pos[0]),
+                pidy.calculate(pos[1]),
+                pidTurn.calculate(driveSubsystem.getRotation().getDegrees()),
+                driveSubsystem.getRotation()
+        );
+
         driveSubsystem.drive(speeds);
 
         if (pos[1] < zGoal + 0.05 && pos[1] > zGoal - 0.05 && pos[0] < xGoal + 0.05 && pos[0] > xGoal - 0.05) {
