@@ -158,9 +158,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command followTrajectoryCommand(PathPlannerTrajectory path) {
         return new SequentialCommandGroup(
-                new InstantCommand(() -> resetOdometry(path) ),
+                //new InstantCommand(() -> resetOdometry(path) ),
                 new PPSwerveControllerCommand(
-                        PathPlanner.loadPath("New Path", 1, 1),
+                        path,
                         odometry::getPoseMeters,
                         new PIDController(1, 0, 0),
                         new PIDController(1, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)

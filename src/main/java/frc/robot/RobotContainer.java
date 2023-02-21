@@ -89,8 +89,9 @@ public class RobotContainer
     {
         Shuffleboard.getTab("Arm").add(powerDistribution);
 
-        comboBox.addOption("Zero Gyro", new InstantCommand(driveSubsystem::zeroGyroYaw));
-        comboBox.addOption("Invert Gyro", new InstantCommand(driveSubsystem::invertGyroYaw));
+        comboBox.addOption("Top Start", topStart());
+        comboBox.addOption("Center Start", centerStart());
+        comboBox.addOption("Bottom Start", bottomStart());
 
         commandTab.add("Command Chooser", comboBox);
 
@@ -163,18 +164,53 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        //PathPlannerTrajectory path = PathPlanner.loadPath("New Path", 1, 1);
+        return new AutoCommandGroup(
+                new ArmPresetPositionCommand(armSubsystem, cTopCube),
+                new AutoAlignCommand(driveSubsystem, visionSubsystem, true),
+                new GrabbinCommand(grabbinSubsystem),
+                comboBox.getSelected());
 
-        //HashMap<String, Command> autoEventMap = new HashMap<>();
-//        autoEventMap.put("marker1", new PrintCommand("Passed marker 1"));
-//        autoEventMap.put("marker2", new PrintCommand("Passed marker 2"));
-//
-//        return new FollowPathWithEvents(
-//            driveSubsystem.followTrajectoryCommand(path),
-//            path.getMarkers(),
-//            autoEventMap
-//        );
+    }
 
-        return comboBox.getSelected();
+    public Command topStart() {
+        PathPlannerTrajectory path = PathPlanner.loadPath("Top start", 1, 1);
+
+        return new FollowPathWithEvents(
+                driveSubsystem.followTrajectoryCommand(path),
+                path.getMarkers(),
+                eventMap()
+        );
+    }
+
+    public Command centerStart() {
+        PathPlannerTrajectory path = PathPlanner.loadPath("Center start", 1, 1);
+
+        return new FollowPathWithEvents(
+                driveSubsystem.followTrajectoryCommand(path),
+                path.getMarkers(),
+                eventMap()
+        );
+    }
+
+    public Command bottomStart() {
+        PathPlannerTrajectory path = PathPlanner.loadPath("Bottom start", 1, 1);
+
+        return new FollowPathWithEvents(
+                driveSubsystem.followTrajectoryCommand(path),
+                path.getMarkers(),
+                eventMap()
+        );
+    }
+
+    public HashMap<String, Command> eventMap() {
+        HashMap<String, Command> eventMap = new HashMap<>();
+        //eventMap.put("homeArm",) TODO
+        eventMap.put("groundPickUp", new ArmPresetPositionCommand(armSubsystem, cGroundPickup));
+        eventMap.put("grab", grabbinCommand = new GrabbinCommand(grabbinSubsystem));
+        eventMap.put("autoAlignCube", new AutoAlignCommand(driveSubsystem, visionSubsystem, true));
+        eventMap.put("autoAlignCone", new AutoAlignCommand(driveSubsystem, visionSubsystem, false));
+        eventMap.put("dropHighCone", new ArmPresetPositionCommand(armSubsystem, cTopCone));
+
+        return eventMap;
     }
 }
