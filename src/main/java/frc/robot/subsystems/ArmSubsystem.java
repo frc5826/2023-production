@@ -35,15 +35,15 @@ public class ArmSubsystem extends SubsystemBase {
         armMotor = new WPI_TalonSRX(cMiddleArmID);
         armMotor.setNeutralMode(NeutralMode.Brake);
 
-        armMotor.configPeakOutputForward(0.4, cTimeoutMs);
-        armMotor.configPeakOutputReverse(-0.4, cTimeoutMs);
-
+        armMotor.configPeakOutputForward(1, cTimeoutMs);
+        armMotor.configPeakOutputReverse(-1, cTimeoutMs);
 
         mastEncoder = new DutyCycleEncoder(cMastEncoderID);
         armEncoder = new DutyCycleEncoder(cArmEncoderID);
 
         mastPID = new PIDController(cMastP, cMastI, cMastD);
-        armPID = new PIDController(cArmP, cArmI, cArmD);
+        //armPID = new PIDController(cArmP, cArmI, cArmD);
+        armPID = new PIDController(3, 0, 0);
 
         setMastTargetRad(cMastEncoderMax);
         setArmTargetRad(cArmEncoderMin);

@@ -48,11 +48,16 @@ public class Constants {
     public static final int cArmEncoderID = 1;
     public static final int cArmClicksPerRotation = 1;
     public static final double cMastEncoderOffset = 0.59111;
-    public static final double cArmEncoderOffset = 0.18389;
-    public static final double cMastEncoderMax = (0.86 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    public static final double cArmEncoderOffset = 0.519; //19
+    public static final double cMastEncoderMax = (0.865 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
     public static final double cMastEncoderMin = (0.732 - cMastEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
-    public static final double cArmEncoderMax = (0.5 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
-    public static final double cArmEncoderMin = (0.23 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+
+    //public static final double cArmEncoderMax = (0.5 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+    //public static final double cArmEncoderMin = (0.23 - cArmEncoderOffset) * ((Math.PI * 2) / cArmClicksPerRotation);
+
+    public static final double cArmEncoderMax = Math.toRadians(114);
+    public static final double cArmEncoderMin = Math.toRadians(15);//
+
 
     //TODO separate arm segment PID values
     public static final double cMastP = 10;
