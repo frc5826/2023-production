@@ -119,7 +119,7 @@ public class RobotContainer
         cPanelButtons[2].onTrue(topConeCommand);
         cPanelButtons[3].onTrue(middleConeCommand);
         cPanelButtons[4].whileTrue(autoAlignConeCommand);
-        cPanelButtons[5].onTrue(new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.4), homeStageTwoCommand));
+        cPanelButtons[5].onTrue(new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.6), homeStageTwoCommand));
         cPanelButtons[7].onTrue(grabbinCommand);
         cPanelButtons[8].onTrue(topCubeCommand);
         cPanelButtons[9].onTrue(middleCubeCommand);

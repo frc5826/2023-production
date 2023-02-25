@@ -57,9 +57,7 @@ public class Constants {
     public static final double cArmEncoderMax = Math.toRadians(117);
     public static final double cArmEncoderMin = Math.toRadians(15);//
 
-
-    //TODO separate arm segment PID values
-    public static final double cMastP = 10;
+    public static final double cMastP = 8;
     public static final double cMastI = 0.5;
     public static final double cMastD = 0;
     public static final double cMastMaxSpeed = 0.4;
@@ -99,7 +97,7 @@ public class Constants {
     public static final Point cTestPoint = new Point(cArmLengths[0], cArmLengths[1]);
     public static final Point cTopCone = new Point(41 /* + cArmBufferX*/, 56 /*+ cArmBufferY*/);
     public static final Point cTopCube = new Point(39.75, 40 + cArmBufferY);
-    public static final Point cMiddleCone = new Point(22.75 + cArmBufferX, 35 + cArmBufferY);
+    public static final Point cMiddleCone = new Point(21.75 + cArmBufferX, 35 + cArmBufferY);
     public static final Point cMiddleCube = new Point(22.75, 28 + cArmBufferY);
     public static final Point cHomeStageOne = new Point(22.75, 28 + cArmBufferY);
     public static final Point cShelfPickup = new Point(22.75 + cArmBufferX, 34 + cArmBufferY);
