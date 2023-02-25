@@ -112,10 +112,10 @@ public class Constants {
     public static final int cSolenoidREV = 7;
 
     public static final double[] cCompetitionOffsets = {
-            66.248149628112955 + 180,
-            250.7614831463437 + 180,
-            307.4751996023543 + 180,
-            333.896484375 + 180
+            246,
+            204.5,
+            333.2 - 180,
+            127.7
     };
 
     public static final double[] cTestOffsets = {
