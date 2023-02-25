@@ -10,6 +10,8 @@ public class SetupGyroCommand extends CommandBase {
     DriveSubsystem driveSubsystem;
     VisionSubsystem visionSubsystem;
 
+    private boolean finished = false;
+
     public SetupGyroCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem) {
         this.driveSubsystem = driveSubsystem;
         this.visionSubsystem = visionSubsystem;
@@ -25,5 +27,9 @@ public class SetupGyroCommand extends CommandBase {
         }
 
         driveSubsystem.resetOdometryButCool(visionSubsystem.getComboPos());
+        finished = true;
     }
+    
+    @Override
+    public boolean isFinished() { return finished; }
 }
