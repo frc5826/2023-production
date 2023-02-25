@@ -32,6 +32,8 @@ public class DriveSubsystem extends SubsystemBase {
     private double gyroPitchOffset;
     private double gyroRollOffset;
 
+    public double driveGyroOffset = 0;
+
     public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     public DriveSubsystem(SwerveDriveKinematics kinematics, double[] offsets, int[] speedControllers) {
@@ -100,6 +102,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
+    public void zeroDriveGyro() {
+        driveGyroOffset = getRotation().getDegrees();
+    }
+
     public void zeroGyroYaw() {
         odometry.resetPosition(
                 Rotation2d.fromDegrees(-gyro.getFusedHeading()),
@@ -153,7 +159,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(PathPlannerTrajectory path) {
         zeroGyroYaw();
-        odometry.resetPosition(gyro.getRotation2d(), new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()} ,path.getInitialHolonomicPose());
+        odometry.resetPosition(gyro.getRotation2d(),
+                new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()} ,path.getInitialHolonomicPose());
+    }
+
+    public void resetOdometryButCool(double[] pose) {
+        odometry.resetPosition(gyro.getRotation2d(),
+                new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()} ,new Pose2d(pose[0], pose[1], getRotation()));
     }
 
     public Command followTrajectoryCommand(PathPlannerTrajectory path) {
