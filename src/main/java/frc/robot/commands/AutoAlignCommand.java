@@ -30,6 +30,7 @@ public class AutoAlignCommand extends CommandBase {
     private boolean iscube;
 
     private int invertDrive = 0;
+    private int turnOffset = 0;
 
     public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean iscube) {
         pidx.setGoal(targetX);
@@ -59,10 +60,12 @@ public class AutoAlignCommand extends CommandBase {
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             targetX = 1.8;
-            invertDrive = 1; //TODO
+            invertDrive = 1;//TODO
+            turnOffset = 180;
         } else {
             targetX = 14.75;
             invertDrive = -1;
+            turnOffset = 0;
         }
 
         pidx.setGoal(targetX);
@@ -77,7 +80,7 @@ public class AutoAlignCommand extends CommandBase {
         System.out.println("current goal: " + targetX + ", " + targetY);
 
         pos = visionSubsystem.getComboPos();
-        double angleDifference = driveSubsystem.getRotation().getDegrees() - 180;
+        double angleDifference = driveSubsystem.getRotation().getDegrees() - turnOffset;
 
         if(angleDifference < 180){
             angleDifference += 360;
@@ -88,7 +91,7 @@ public class AutoAlignCommand extends CommandBase {
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
                 pidx.calculate(pos[0]) * invertDrive,
                 pidy.calculate(pos[1]) * invertDrive,
-                pidTurn.calculate(driveSubsystem.getRotation().getDegrees()),
+                pidTurn.calculate(angleDifference),
 
                 driveSubsystem.getRotation()
         );

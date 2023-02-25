@@ -33,7 +33,7 @@ public class FieldOrientedDriveCommand extends CommandBase {
         }
 
         if (Constants.cXbox.getRightBumperPressed()) { //TODO ask drivers which would be best :D
-            input[2] = pidTurn.calculate(driveSubsystem.getRotation().getDegrees());
+            input[2] = pidTurn.calculate(driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)).getDegrees());
         }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed,
