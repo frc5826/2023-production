@@ -34,8 +34,8 @@ public class Constants {
     public static final double cJoystickMin = 0.1;
     public static final double cXboxMin = 0.15;
 
-    public static final int cBaseArmID = 9;
-    public static final int cMiddleArmID = 10;
+    public static final int cBaseArmID = 10;
+    public static final int cMiddleArmID = 9;
 
     public static final double cGoalXMin = 0;
     public static final double cGoalYMin = 0;
