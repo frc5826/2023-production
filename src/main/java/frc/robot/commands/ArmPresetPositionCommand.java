@@ -30,7 +30,7 @@ public class ArmPresetPositionCommand extends CommandBase {
     public ArmPresetPositionCommand(ArmSubsystem armSubsystem){
         armControlMode = ArmControlMode.ANGLES;
         mastTargetRad = 143857670;
-        armTargetRad = -29384756;
+        armTargetRad = -23846567;
 
         this.armSubsystem = armSubsystem;
         addRequirements(armSubsystem);

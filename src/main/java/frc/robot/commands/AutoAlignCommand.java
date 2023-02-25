@@ -77,11 +77,19 @@ public class AutoAlignCommand extends CommandBase {
         System.out.println("current goal: " + targetX + ", " + targetY);
 
         pos = visionSubsystem.getComboPos();
+        double angleDifference = driveSubsystem.getRotation().getDegrees() - 180;
+
+        if(angleDifference < 180){
+            angleDifference += 360;
+        } else if (angleDifference > 180) {
+            angleDifference -= 360;
+        }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
                 pidx.calculate(pos[0]) * invertDrive,
                 pidy.calculate(pos[1]) * invertDrive,
                 pidTurn.calculate(driveSubsystem.getRotation().getDegrees()),
+
                 driveSubsystem.getRotation()
         );
 

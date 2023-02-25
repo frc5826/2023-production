@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ArmSubsystem;
@@ -54,11 +52,12 @@ public class RobotContainer
     ArmPresetPositionCommand topCubeCommand = new ArmPresetPositionCommand(armSubsystem, cTopCube);
     ArmPresetPositionCommand topConeCommand = new ArmPresetPositionCommand(armSubsystem, cTopCone);
     ArmPresetPositionCommand middleCubeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCube);
+    ArmPresetPositionCommand homeStageOneCommand = new ArmPresetPositionCommand(armSubsystem, cHomeStageOne);
     ArmPresetPositionCommand middleConeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCone);
     ArmPresetPositionCommand groundPickupCommand = new ArmPresetPositionCommand(armSubsystem, cGroundPickup);
     ArmPresetPositionCommand groundDropoffCommand = new ArmPresetPositionCommand(armSubsystem, cGroundDropoff);
     ArmPresetPositionCommand shelfPickupCommand = new ArmPresetPositionCommand(armSubsystem, cShelfPickup);
-    ArmPresetPositionCommand homeCommand = new ArmPresetPositionCommand(armSubsystem);
+    ArmPresetPositionCommand homeStageTwoCommand = new ArmPresetPositionCommand(armSubsystem);
 
 
     {
@@ -112,15 +111,15 @@ public class RobotContainer
     private void configureBindings() {
         cXboxX.onTrue(moveMastBkwCommand);
         cXboxA.onTrue(moveArmBkwCommand);
-        cXboxY.onTrue(moveMastFwdCommand);
-        cXboxB.onTrue(moveArmFwdCommand);
+        cXboxB.onTrue(moveMastFwdCommand);
+        cXboxY.onTrue(moveArmFwdCommand);
 
         cPanelButtons[0].onTrue(groundPickupCommand);
         cPanelButtons[1].onTrue(groundDropoffCommand);
         cPanelButtons[2].onTrue(topConeCommand);
         cPanelButtons[3].onTrue(middleConeCommand);
         cPanelButtons[4].whileTrue(autoAlignConeCommand);
-        cPanelButtons[5].onTrue(homeCommand);
+        cPanelButtons[5].onTrue(new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.4), homeStageTwoCommand));
         cPanelButtons[7].onTrue(grabbinCommand);
         cPanelButtons[8].onTrue(topCubeCommand);
         cPanelButtons[9].onTrue(middleCubeCommand);
