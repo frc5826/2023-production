@@ -10,9 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -59,6 +57,9 @@ public class RobotContainer
     ArmPresetPositionCommand middleConeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCone);
     ArmPresetPositionCommand groundPickupCommand = new ArmPresetPositionCommand(armSubsystem, cGroundPickup);
     ArmPresetPositionCommand groundDropoffCommand = new ArmPresetPositionCommand(armSubsystem, cGroundDropoff);
+    ArmPresetPositionCommand shelfPickupCommand = new ArmPresetPositionCommand(armSubsystem, cShelfPickup);
+    ArmPresetPositionCommand homeCommand = new ArmPresetPositionCommand(armSubsystem);
+
 
     {
         if (System.getenv("serialnum").equals(cTestSerialNumber)) {
@@ -109,20 +110,23 @@ public class RobotContainer
     
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
-        button3.onTrue(moveMastBkwCommand);
-        button4.onTrue(moveArmBkwCommand);
-        button5.onTrue(moveMastFwdCommand);
-        button6.onTrue(moveArmFwdCommand);
+        cXboxX.onTrue(moveMastBkwCommand);
+        cXboxA.onTrue(moveArmBkwCommand);
+        cXboxY.onTrue(moveMastFwdCommand);
+        cXboxB.onTrue(moveArmFwdCommand);
 
-        PanelButtons[0].onTrue(groundPickupCommand);
-        PanelButtons[1].onTrue(groundDropoffCommand);
-        PanelButtons[2].onTrue(topConeCommand);
-        PanelButtons[3].onTrue(middleConeCommand);
-        PanelButtons[4].whileTrue(autoAlignConeCommand);
-        PanelButtons[7].onTrue(grabbinCommand);
-        PanelButtons[8].onTrue(topCubeCommand);
-        PanelButtons[9].onTrue(middleCubeCommand);
-        PanelButtons[10].whileTrue(autoAlignCubeCommand);
+        cPanelButtons[0].onTrue(groundPickupCommand);
+        cPanelButtons[1].onTrue(groundDropoffCommand);
+        cPanelButtons[2].onTrue(topConeCommand);
+        cPanelButtons[3].onTrue(middleConeCommand);
+        cPanelButtons[4].whileTrue(autoAlignConeCommand);
+        cPanelButtons[5].onTrue(homeCommand);
+        cPanelButtons[7].onTrue(grabbinCommand);
+        cPanelButtons[8].onTrue(topCubeCommand);
+        cPanelButtons[9].onTrue(middleCubeCommand);
+        cPanelButtons[10].whileTrue(autoAlignCubeCommand);
+        cPanelButtons[11].onTrue(shelfPickupCommand);
+
 
 
         commandTab.add("Top Cube Command", topCubeCommand);
@@ -137,10 +141,12 @@ public class RobotContainer
             driveSubsystem.zeroGyroRollPitch();
         }));
 
-        zeroGyroXbox.onTrue(new InstantCommand(() -> {
+        cXboxStart.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();
             driveSubsystem.zeroGyroRollPitch();
         }));
+
+        autoBalance.whileTrue(autoBalanceCommand);
 
 //        vibrateXbox.onTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
 //        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));

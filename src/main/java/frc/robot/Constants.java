@@ -1,17 +1,11 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArmPresetPositionCommand;
 import frc.robot.fabrik.Point;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
-
-import java.util.HashMap;
 
 public class Constants {
 
@@ -20,14 +14,14 @@ public class Constants {
 
     public static final Joystick cButtonPanel = new Joystick(2);
 
-    public static final Trigger[] PanelButtons;
+    public static final Trigger[] cPanelButtons;
 
     static {
-        PanelButtons = new Trigger[12];
+        cPanelButtons = new Trigger[12];
 
-        for(int i = 0; i < PanelButtons.length; i++) {
+        for(int i = 0; i < cPanelButtons.length; i++) {
             int finalI = i+1;
-            PanelButtons[i] = new Trigger(() -> cButtonPanel.getRawButton(finalI));
+            cPanelButtons[i] = new Trigger(() -> cButtonPanel.getRawButton(finalI));
         }
     }
 
@@ -77,14 +71,17 @@ public class Constants {
     public static final double cDriveSpeed = 5;
     public static final double cTurnSpeed = 1.5;
 
-    public static Trigger zeroGyroXbox = new Trigger(() -> cXbox.getStartButtonPressed());
+    public static Trigger cXboxStart = new Trigger(() -> cXbox.getStartButtonPressed());
 
-    public static Trigger vibrateXbox = new Trigger(() -> cXbox.getRightBumperPressed());
+    public static Trigger cXboxRightBumper = new Trigger(() -> cXbox.getRightBumperPressed());
 
     public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
 
-    public static Trigger autoBalance = new Trigger(() -> cJoystick.getRawButton(11));
-    public static Trigger align = new Trigger(() -> cXbox.getAButton());
+    public static Trigger autoBalance = new Trigger(() -> cXbox.getRawButton(7));
+    public static Trigger cXboxA = new Trigger(() -> cXbox.getAButton());
+    public static Trigger cXboxB = new Trigger(() -> cXbox.getBButton());
+    public static Trigger cXboxX = new Trigger(() -> cXbox.getXButton());
+    public static Trigger cXboxY = new Trigger(() -> cXbox.getYButton());
     public static final int cArmEncoderClicks = 1;
 
     public static final double cTopConeX = 39.75;
@@ -104,6 +101,7 @@ public class Constants {
     public static final Point cTopCube = new Point(39.75, 40 + cArmBufferY);
     public static final Point cMiddleCone = new Point(22.75 + cArmBufferX, 34 + cArmBufferY);
     public static final Point cMiddleCube = new Point(22.75, 28 + cArmBufferY);
+    public static final Point cShelfPickup = new Point(22.75 + cArmBufferX, 34 + cArmBufferY);
 
     public static final Point cGroundPickup = new Point(5, 2);
     public static final Point cGroundDropoff = new Point(6, 9);
@@ -147,7 +145,7 @@ public class Constants {
 
     public static final String cTestSerialNumber = "031c007a";
 
-    public static double[] yCoordDrop = new double[]{0.5, 1.0, 1.6, 2.2, 2.75, 3.3, 3.85, 4.4, 4.95};
+    public static double[] cYCoordDrop = new double[]{0.5, 1.0, 1.6, 2.2, 2.75, 3.3, 3.85, 4.4, 4.95};
 
     public static int[] cCompetitionSpeedControllers = {6, 5, 4, 3, 2, 1, 8, 7};
 
