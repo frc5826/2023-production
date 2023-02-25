@@ -17,11 +17,9 @@ public class AutoAlignCommand extends CommandBase {
     private boolean finished = false;
 
     private double[] pos = new double[]{0, 0/*, 0, 0, 0, 0*/};
-    private double xGoal = 0;
-    private double zGoal = 0;
 
-    private PID pidy = new PID(1.5, 0, 0.015, 1, 0, 0.005);
-    private PID pidx = new PID(1.5, 0, 0.015, 0.7, 0, 0.005);
+    private PID pidy = new PID(1.25, 0, 0.015, 1, 0, 0.005);
+    private PID pidx = new PID(1.25, 0, 0.015, 0.7, 0, 0.005);
     private PID pidTurn = new PID(0.1, 0, 0.004, 2, 0, 1);
 
     private double[] cubegoalY = new double[]{1, 2.75, 4.4};
@@ -30,6 +28,9 @@ public class AutoAlignCommand extends CommandBase {
     private double targetX;
 
     private boolean iscube;
+
+    private int invertDrive = 0;
+    private int turnOffset = 0;
 
     public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean iscube) {
         pidx.setGoal(targetX);
@@ -59,8 +60,12 @@ public class AutoAlignCommand extends CommandBase {
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             targetX = 1.8;
+            invertDrive = 1;//TODO
+            turnOffset = 180;
         } else {
             targetX = 14.75;
+            invertDrive = -1;
+            turnOffset = 0;
         }
 
         pidx.setGoal(targetX);
@@ -75,7 +80,7 @@ public class AutoAlignCommand extends CommandBase {
         System.out.println("current goal: " + targetX + ", " + targetY);
 
         pos = visionSubsystem.getComboPos();
-        double angleDifference = driveSubsystem.getRotation().getDegrees() - 180;
+        double angleDifference = driveSubsystem.getRotation().getDegrees() - turnOffset;
 
         if(angleDifference < 180){
             angleDifference += 360;
@@ -84,15 +89,16 @@ public class AutoAlignCommand extends CommandBase {
         }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
-                -pidx.calculate(pos[0]),
-                -pidy.calculate(pos[1]),
+                pidx.calculate(pos[0]) * invertDrive,
+                pidy.calculate(pos[1]) * invertDrive,
                 pidTurn.calculate(angleDifference),
+
                 driveSubsystem.getRotation()
         );
 
         driveSubsystem.drive(speeds);
 
-        if (pos[1] < zGoal + 0.05 && pos[1] > zGoal - 0.05 && pos[0] < xGoal + 0.05 && pos[0] > xGoal - 0.05) {
+        if (pos[1] < targetY + 0.01 && pos[1] > targetY - 0.01 && pos[0] < targetX + 0.01 && pos[0] > targetX - 0.01) {
             finished = true;
         }
 

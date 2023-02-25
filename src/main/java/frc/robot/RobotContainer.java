@@ -59,7 +59,6 @@ public class RobotContainer
     ArmPresetPositionCommand shelfPickupCommand = new ArmPresetPositionCommand(armSubsystem, cShelfPickup);
     ArmPresetPositionCommand homeStageTwoCommand = new ArmPresetPositionCommand(armSubsystem);
 
-
     {
         if (System.getenv("serialnum").equals(cTestSerialNumber)) {
             driveSubsystem = new DriveSubsystem(cTestKinematics, cTestOffsets, cTestSpeedControllers);
@@ -67,6 +66,8 @@ public class RobotContainer
             driveSubsystem = new DriveSubsystem(cCompetitionKinematics, cCompetitionOffsets, cCompetitionSpeedControllers);
         }
     }
+
+    SequentialCommandGroup homeArm = new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.4), homeStageTwoCommand);
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
@@ -170,6 +171,7 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         return new AutoCommandGroup(
+                new SetupGyroCommand(driveSubsystem, visionSubsystem),
                 new ArmPresetPositionCommand(armSubsystem, cTopCube),
                 new AutoAlignCommand(driveSubsystem, visionSubsystem, true),
                 new GrabbinCommand(grabbinSubsystem),
@@ -209,12 +211,12 @@ public class RobotContainer
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
-        //eventMap.put("homeArm",) TODO
-        eventMap.put("groundPickUp", new ArmPresetPositionCommand(armSubsystem, cGroundPickup));
-        eventMap.put("grab", grabbinCommand = new GrabbinCommand(grabbinSubsystem));
-        eventMap.put("autoAlignCube", new AutoAlignCommand(driveSubsystem, visionSubsystem, true));
-        eventMap.put("autoAlignCone", new AutoAlignCommand(driveSubsystem, visionSubsystem, false));
-        eventMap.put("dropHighCone", new ArmPresetPositionCommand(armSubsystem, cTopCone));
+        eventMap.put("homeArm", homeArm);
+        eventMap.put("groundPickUp", groundPickupCommand);
+        eventMap.put("grab", grabbinCommand);
+        eventMap.put("autoAlignCube", autoAlignCubeCommand);
+        eventMap.put("autoAlignCone", autoAlignConeCommand);
+        eventMap.put("dropHighCone", topConeCommand);
 
         return eventMap;
     }

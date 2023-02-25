@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,12 +13,11 @@ import frc.robot.subsystems.VisionSubsystem;
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
-
-    private PID pidAutoTurn = new PID(0.005, 0, 0, 10, 0.2, 2.5);
+    private PID pidTurn = new PID(0.075, 0, 0.004, 1.75, 0, 1);
     private AHRS gyro;
 
     public FieldOrientedDriveCommand(DriveSubsystem driveSubsystem) {
-        pidAutoTurn.setGoal(0);
+        pidTurn.setGoal(0); //once again might be wrong if targeting the opposite side of the field
         gyro = driveSubsystem.gyro;
 
         this.driveSubsystem = driveSubsystem;
@@ -25,7 +25,6 @@ public class FieldOrientedDriveCommand extends CommandBase {
     }
 
     public void execute() {
-        //switch to getXboxInput() to  use xbox controller
         double[] input = new double[3];
         if (DriverStation.isJoystickConnected(0)) {
             input = getJoystickInput();
@@ -33,16 +32,12 @@ public class FieldOrientedDriveCommand extends CommandBase {
             input = getXboxInput();
         }
 
+        if (Constants.cXbox.getRightBumperPressed()) { //TODO ask drivers which would be best :D
+            input[2] = pidTurn.calculate(driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)).getDegrees());
+        }
 
-//        if (Constants.cJoystick.getRawButton(3)) {
-//            ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], -pidAutoTurn.calculate(turnZero()), driveSubsystem.getRotation());
-//            driveSubsystem.drive(speeds);
-//        }
-//        else {
-//
-//        }
-
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed, driveSubsystem.getRotation());
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed,
+                driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)));
         driveSubsystem.drive(speeds);
 
     }
@@ -81,18 +76,4 @@ public class FieldOrientedDriveCommand extends CommandBase {
         return xboxReturn;
     }
 
-    public double turnZero() { //TODO
-        double gyroAngle = gyro.getAngle() % 360;
-        if (gyroAngle < 0) {
-            gyroAngle += 360;
-        }
-
-        if (gyroAngle > 180) {
-            gyroAngle -= 360;
-        } else if (gyroAngle < -180) {
-            gyroAngle += 360;
-        }
-
-        return gyroAngle;
-    }
 }
