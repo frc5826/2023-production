@@ -2,14 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
-    public AutoCommandGroup(Command topCube, Command autoAlign, Command drop, Command pathPlanner, Command setupGyroCommand) {
-        Command SetupGyroCommand = setupGyroCommand;
-
+    public AutoCommandGroup(Command setupGyroCommand, Command topCube, Command autoAlign, Command drop, Command pathPlanner) {
         addCommands(
-              SetupGyroCommand,
+              setupGyroCommand,
               topCube,
+              new WaitCommand(4),
               autoAlign,
               drop,
               pathPlanner

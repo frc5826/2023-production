@@ -2,9 +2,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PID;
 import frc.robot.subsystems.VisionSubsystem;
@@ -18,9 +20,9 @@ public class AutoAlignCommand extends CommandBase {
 
     private double[] pos = new double[]{0, 0/*, 0, 0, 0, 0*/};
 
-    private PID pidy = new PID(1.25, 0, 0.015, 1, 0, 0.005);
-    private PID pidx = new PID(1.25, 0, 0.015, 0.7, 0, 0.005);
-    private PID pidTurn = new PID(0.1, 0, 0.004, 2, 0, 1);
+    private PID pidy = new PID(1.25, 0, 0.015, 0.6, 0, 0.01);
+    private PID pidx = new PID(1.25, 0, 0.015, 0.6, 0, 0.01);
+    private PID pidTurn = new PID(0.1, 0, 0.004, 1, 0, 1); //TODO turn speed back up
 
     private double[] cubegoalY = new double[]{1, 2.75, 4.4};
     private double[] conegoalY = new double[]{0.5, 1.6, 2.2, 3.3, 3.85, 4.95};
@@ -29,8 +31,16 @@ public class AutoAlignCommand extends CommandBase {
 
     private boolean iscube;
 
-    private int invertDrive = 0;
+    private int invertDrive = 1;
     private int turnOffset = 0;
+
+    private edu.wpi.first.wpilibj.Timer timer = new edu.wpi.first.wpilibj.Timer();
+    double time = 100;
+
+    public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean iscube, double time) {
+        this(driveSubsystem, visionSubsystem, iscube);
+        this.time = time;
+    }
 
     public AutoAlignCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, boolean iscube) {
         pidx.setGoal(targetX);
@@ -59,12 +69,12 @@ public class AutoAlignCommand extends CommandBase {
         }
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
-            targetX = 1.8;
-            invertDrive = 1;//TODO
+            targetX = 1.825;
+            //invertDrive = -1;//TODO
             turnOffset = 180;
         } else {
-            targetX = 14.75;
-            invertDrive = -1;
+            targetX = 14.725;
+            //invertDrive = 1;
             turnOffset = 0;
         }
 
@@ -72,17 +82,18 @@ public class AutoAlignCommand extends CommandBase {
         pidy.setGoal(targetY);
 
         finished = false;
+
+        timer.reset();
+        timer.start();
     }
 
     @Override
     public void execute() {
 
-        System.out.println("current goal: " + targetX + ", " + targetY);
-
         pos = visionSubsystem.getComboPos();
         double angleDifference = driveSubsystem.getRotation().getDegrees() - turnOffset;
 
-        if(angleDifference < 180){
+        if(angleDifference < -180){
             angleDifference += 360;
         } else if (angleDifference > 180) {
             angleDifference -= 360;
@@ -98,7 +109,9 @@ public class AutoAlignCommand extends CommandBase {
 
         driveSubsystem.drive(speeds);
 
-        if (pos[1] < targetY + 0.01 && pos[1] > targetY - 0.01 && pos[0] < targetX + 0.01 && pos[0] > targetX - 0.01) {
+        double deadband = 0.025;
+
+        if (pos[1] < targetY + deadband && pos[1] > targetY - deadband && pos[0] < targetX + deadband && pos[0] > targetX - deadband) {
             finished = true;
         }
 
@@ -106,7 +119,16 @@ public class AutoAlignCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        if (timer.get() > time) {
+            finished = true;
+        }
+
         return finished;
+    }
+
+    @Override
+    public void end(boolean yeah) {
+        timer.stop();
     }
 
 //    public double getTargetY() {

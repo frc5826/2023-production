@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.swervedrivespecialties.swervelib.*;
 import edu.wpi.first.math.controller.PIDController;
@@ -164,7 +166,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometryButCool(double[] pose) {
-        odometry.resetPosition(gyro.getRotation2d(),
+        odometry.resetPosition(getRotation(),
                 new SwerveModulePosition[]{ frontLeftModule.getPosition(), frontRightModule.getPosition(), backLeftModule.getPosition(), backRightModule.getPosition()} ,new Pose2d(pose[0], pose[1], getRotation()));
     }
 
@@ -178,9 +180,25 @@ public class DriveSubsystem extends SubsystemBase {
                         new PIDController(1, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)
                         new PIDController(2, 0, 0),
                         this::drive,
-                        true,
+                        false,
                         this)
         );
     }
+
+    public SwerveAutoBuilder getAutoBuilder(HashMap<String, Command> eventMap) {
+        return new SwerveAutoBuilder(
+                odometry::getPoseMeters,
+                pose2d -> {},
+                new PIDConstants(1, 0, 0),
+                new PIDConstants(2, 0, 0),
+                this::drive,
+                eventMap,
+                false,
+                this
+        );
+
+
+    }
+
 
 }

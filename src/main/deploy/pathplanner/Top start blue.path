@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.812716958767252,
-        "y": 1.0577004487342316
+        "x": 1.8,
+        "y": 4.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8425831851663723,
-        "y": 0.9881148928964529
+        "x": 1.770965625264585,
+        "y": 4.230801794936924
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -24,26 +24,24 @@
     },
     {
       "anchorPoint": {
-        "x": 6.391446532893066,
-        "y": 0.9324464482262306
+        "x": 3.260096520193041,
+        "y": 4.857071797476929
       },
       "prevControl": {
-        "x": 3.4271018542037086,
-        "y": 0.4731817796968947
+        "x": 1.9779448029482927,
+        "y": 4.927326686093081
       },
       "nextControl": {
-        "x": 6.478428342886711,
-        "y": 0.9459225032956685
+        "x": 4.276045635424605,
+        "y": 4.801403352806706
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "groundPickUp",
-          "grab",
           "homeArm"
         ],
         "executionBehavior": "sequential",
@@ -53,12 +51,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.174561849123699,
-        "y": 0.570601557869784
+        "x": 6.530617644568622,
+        "y": 4.592646685293372
       },
       "prevControl": {
-        "x": 3.3563161459656263,
-        "y": 0.6401871137075628
+        "x": 4.90231563796461,
+        "y": 5.093662687325375
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -67,9 +65,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "autoAlign"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
@@ -78,7 +74,7 @@
   ],
   "markers": [
     {
-      "position": 0.25,
+      "position": 1.0181818181818183,
       "names": [
         "homeArm"
       ]

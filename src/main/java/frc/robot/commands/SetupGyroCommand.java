@@ -20,13 +20,16 @@ public class SetupGyroCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) { //TODO might be red
+        driveSubsystem.resetOdometryButCool(visionSubsystem.getComboPos());
+
+        if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             driveSubsystem.invertGyroYaw();
         } else {
             driveSubsystem.zeroGyroYaw();
         }
 
-        driveSubsystem.resetOdometryButCool(visionSubsystem.getComboPos());
+        driveSubsystem.zeroGyroRollPitch();
+
         finished = true;
     }
     

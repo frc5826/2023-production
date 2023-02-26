@@ -6,8 +6,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -40,7 +39,7 @@ public class RobotContainer
     ArmSubsystem armSubsystem = new ArmSubsystem();
     VisionSubsystem visionSubsystem = new VisionSubsystem();
 
-    ShuffleboardTab commandTab = Shuffleboard.getTab("Commands");
+    ShuffleboardTab dashboard = Shuffleboard.getTab("Driving");
 
     SendableChooser<Command> comboBox = new SendableChooser<Command>();
 
@@ -68,6 +67,7 @@ public class RobotContainer
     }
 
     SequentialCommandGroup homeArm = new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.4), homeStageTwoCommand);
+    SwerveAutoBuilder autoBuilder;
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
     AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
@@ -90,11 +90,18 @@ public class RobotContainer
     {
         Shuffleboard.getTab("Arm").add(powerDistribution);
 
-        comboBox.addOption("Top Start", topStart());
-        comboBox.addOption("Center Start", centerStart());
-        comboBox.addOption("Bottom Start", bottomStart());
+        autoBuilder = driveSubsystem.getAutoBuilder(eventMap());
+        //comboBox.addOption("test Start", testStart());
 
-        commandTab.add("Command Chooser", comboBox);
+        comboBox.addOption("Top start red", autoPath("Top start red", 1.3f));
+        comboBox.addOption("Center start red", autoPath("Center start red", 0.8f));
+        comboBox.addOption("Bottom start red", autoPath("Bottom start red", 1.3f));
+
+        comboBox.addOption("Top start blue", autoPath("Top start blue", 1.3f));
+        comboBox.addOption("Center start blue", autoPath("Center start blue", 0.8f));
+        comboBox.addOption("Bottom start blue", autoPath("Bottom start blue", 1.3f));
+
+        dashboard.add("Command Chooser", comboBox).withSize(2,2).withPosition(7, 0);
 
         comboBox.getSelected();
 
@@ -104,10 +111,12 @@ public class RobotContainer
 
         camera = CameraServer.startAutomaticCapture();
         camera.setResolution(320, 240);
-        camera.setFPS(20);
+        camera.setFPS(10);
+        dashboard.add(camera).withSize(3, 3).withPosition(0, 0);
+        dashboard.addCamera("Limelight", "limelight-avis", "10.58.26.11:5800").withSize(3,3).withPosition(3,0);
+
     }
-    
-    
+
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
         cXboxX.onTrue(moveMastBkwCommand);
@@ -120,21 +129,12 @@ public class RobotContainer
         cPanelButtons[2].onTrue(topConeCommand);
         cPanelButtons[3].onTrue(middleConeCommand);
         cPanelButtons[4].whileTrue(autoAlignConeCommand);
-        cPanelButtons[5].onTrue(new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.6), homeStageTwoCommand));
+        cPanelButtons[5].onTrue(homeArm);
         cPanelButtons[7].onTrue(grabbinCommand);
         cPanelButtons[8].onTrue(topCubeCommand);
         cPanelButtons[9].onTrue(middleCubeCommand);
         cPanelButtons[10].whileTrue(autoAlignCubeCommand);
         cPanelButtons[11].onTrue(shelfPickupCommand);
-
-
-
-        commandTab.add("Top Cube Command", topCubeCommand);
-        commandTab.add("Top Cone Command", topConeCommand);
-        commandTab.add("Middle Cube Command", middleCubeCommand);
-        commandTab.add("Middle Cone Command", middleConeCommand);
-        commandTab.add("Ground Pickup Command", groundPickupCommand);
-        commandTab.add("Ground Dropoff Command", groundDropoffCommand);
 
         zeroGyroJoystick.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroGyroYaw();
@@ -173,50 +173,28 @@ public class RobotContainer
         return new AutoCommandGroup(
                 new SetupGyroCommand(driveSubsystem, visionSubsystem),
                 new ArmPresetPositionCommand(armSubsystem, cTopCube),
-                new AutoAlignCommand(driveSubsystem, visionSubsystem, true),
+                new AutoAlignCommand(driveSubsystem, visionSubsystem, true, 2.5),
                 new GrabbinCommand(grabbinSubsystem),
                 comboBox.getSelected());
 
     }
 
-    public Command topStart() {
-        PathPlannerTrajectory path = PathPlanner.loadPath("Top start", 1, 1);
-
-        return new FollowPathWithEvents(
-                driveSubsystem.followTrajectoryCommand(path),
-                path.getMarkers(),
-                eventMap()
-        );
-    }
-
-    public Command centerStart() {
-        PathPlannerTrajectory path = PathPlanner.loadPath("Center start", 1, 1);
-
-        return new FollowPathWithEvents(
-                driveSubsystem.followTrajectoryCommand(path),
-                path.getMarkers(),
-                eventMap()
-        );
-    }
-
-    public Command bottomStart() {
-        PathPlannerTrajectory path = PathPlanner.loadPath("Bottom start", 1, 1);
-
-        return new FollowPathWithEvents(
-                driveSubsystem.followTrajectoryCommand(path),
-                path.getMarkers(),
-                eventMap()
-        );
+    private Command autoPath(String path, float vel) {
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup(path, vel, 1));
     }
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("homeArm", homeArm);
+        eventMap.put("homeArm", new SequentialCommandGroup(new ArmPresetPositionCommand(armSubsystem, cHomeStageOne), new WaitCommand(0.4), new ArmPresetPositionCommand(armSubsystem), new WaitCommand(0)));
         eventMap.put("groundPickUp", groundPickupCommand);
         eventMap.put("grab", grabbinCommand);
         eventMap.put("autoAlignCube", autoAlignCubeCommand);
         eventMap.put("autoAlignCone", autoAlignConeCommand);
         eventMap.put("dropHighCone", topConeCommand);
+        eventMap.put("autoBalance", new AutoBalanceCommand(driveSubsystem));
+
+        eventMap.put("wait2sec", new WaitCommand(2));
+        eventMap.put("wait3sec", new WaitCommand(3));
 
         return eventMap;
     }

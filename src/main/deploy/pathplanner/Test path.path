@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8,
-        "y": 4.4
+        "x": 14.73,
+        "y": 1.0577004487342316
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.770965625264585,
-        "y": 4.230801794936924
+        "x": 14.630376344086022,
+        "y": 0.5566844467022287
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.530617644568622,
-        "y": 4.592646685293372
+        "x": 12.988157226314453,
+        "y": 0.5845186690373393
       },
       "prevControl": {
-        "x": 1.965805181610364,
-        "y": 5.037994242655152
+        "x": 14.045857675048685,
+        "y": 0.528850224367117
       },
       "nextControl": {
-        "x": 6.613725730904167,
-        "y": 4.584538579309416
+        "x": 11.93045677758022,
+        "y": 0.6401871137075615
       },
       "holonomicAngle": 0.0,
       "isReversal": false,
@@ -42,45 +42,35 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "groundPickUp",
-          "grab"
+          "homeArm"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "waitBehavior": "after",
+        "waitTime": 2.5
       }
     },
     {
       "anchorPoint": {
-        "x": 2.1188934044534764,
-        "y": 4.745734908136483
+        "x": 10.343906104478876,
+        "y": 0.946363559393787
       },
       "prevControl": {
-        "x": 4.024337482004865,
-        "y": 4.676149352298244
+        "x": 11.248518330369993,
+        "y": 0.5288502243671169
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "autoAlign"
-        ],
-        "executionBehavior": "sequential",
+        "names": [],
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.5,
-      "names": [
-        "homeArm"
-      ]
-    }
-  ]
+  "markers": []
 }

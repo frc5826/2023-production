@@ -10,7 +10,7 @@ public class AutoBalanceCommand extends CommandBase {
     private DriveSubsystem driveSubsystem;
 
     private AHRS gyro;
-    private PID pidy = new PID(.7, 0, 0, 2, 0.1, Math.sin(Math.toRadians(1.25)));
+    private PID pidy = new PID(1, 0, 0, 2, 0.1, Math.sin(Math.toRadians(1.25)));
     private PID pidz = new PID(.2,0,0, 2, 0.05, .7);
     //private PID pidx = new PID();
 
@@ -27,8 +27,8 @@ public class AutoBalanceCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double pitch = driveSubsystem.getGyroPitch();
-        double roll = driveSubsystem.getGyroRoll();
+        double roll = driveSubsystem.getGyroPitch();
+        double pitch = driveSubsystem.getGyroRoll();
 
         ChassisSpeeds speeds;
 
