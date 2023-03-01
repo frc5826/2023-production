@@ -93,13 +93,15 @@ public class RobotContainer
         autoBuilder = driveSubsystem.getAutoBuilder(eventMap());
         //comboBox.addOption("test Start", testStart());
 
-        comboBox.addOption("Top start red", autoPath("Top start red", 1.3f));
-        comboBox.addOption("Center start red", autoPath("Center start red", 0.8f));
-        comboBox.addOption("Bottom start red", autoPath("Bottom start red", 1.3f));
+        comboBox.setDefaultOption("No exit (any)", new InstantCommand());
 
-        comboBox.addOption("Top start blue", autoPath("Top start blue", 1.3f));
-        comboBox.addOption("Center start blue", autoPath("Center start blue", 0.8f));
-        comboBox.addOption("Bottom start blue", autoPath("Bottom start blue", 1.3f));
+        comboBox.addOption("Top red (3)", autoPath("Top start red", 1.3f));
+        comboBox.addOption("Center red (2)", autoPath("Center start red", 0.8f));
+        comboBox.addOption("Bottom red (1)", autoPath("Bottom start red", 1.3f));
+
+        comboBox.addOption("Top blue (6)", autoPath("Top start blue", 1.3f));
+        comboBox.addOption("Center blue (7)", autoPath("Center start blue", 0.8f));
+        comboBox.addOption("Bottom blue (8)", autoPath("Bottom start blue", 1.3f));
 
         dashboard.add("Command Chooser", comboBox).withSize(2,2).withPosition(7, 0);
 
@@ -112,9 +114,17 @@ public class RobotContainer
         camera = CameraServer.startAutomaticCapture();
         camera.setResolution(320, 240);
         camera.setFPS(10);
-        dashboard.add(camera).withSize(3, 3).withPosition(0, 0);
-        dashboard.addCamera("Limelight", "limelight-avis", "10.58.26.11:5800").withSize(3,3).withPosition(3,0);
+        try {
+            dashboard.addCamera("Limelight", "limelight-avis", "10.58.26.11:5800").withSize(3, 3).withPosition(3, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        try {
+            dashboard.add(camera).withSize(3, 3).withPosition(0, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /** Use this method to define your trigger->command mappings. */
@@ -142,7 +152,7 @@ public class RobotContainer
         }));
 
         cXboxStart.onTrue(new InstantCommand(() -> {
-            driveSubsystem.zeroGyroYaw();
+            driveSubsystem.zeroDriveGyro();
             driveSubsystem.zeroGyroRollPitch();
         }));
 
@@ -161,8 +171,8 @@ public class RobotContainer
 //        PanelButtons[3].whileTrue(new InstantCommand(driveSubsystem::zeroGyroYaw));
 
     }
-    
-    
+
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -171,7 +181,7 @@ public class RobotContainer
     public Command getAutonomousCommand()
     {
         return new AutoCommandGroup(
-                new SetupGyroCommand(driveSubsystem, visionSubsystem),
+                new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem),
                 new ArmPresetPositionCommand(armSubsystem, cTopCube),
                 new AutoAlignCommand(driveSubsystem, visionSubsystem, true, 2.5),
                 new GrabbinCommand(grabbinSubsystem),

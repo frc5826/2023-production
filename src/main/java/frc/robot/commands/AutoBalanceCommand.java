@@ -33,7 +33,7 @@ public class AutoBalanceCommand extends CommandBase {
         ChassisSpeeds speeds;
 
         if (Math.abs(roll) > .7) {
-            speeds = new ChassisSpeeds(0, 0, Math.signum(pitch) * pidz.calculate(roll));
+            speeds = new ChassisSpeeds(0, 0, -Math.signum(pitch) * pidz.calculate(roll));
         } else if (Math.abs(pitch) > 0.25) { // Math.sin(Math.toRadians(1))
             speeds = new ChassisSpeeds(-pidy.calculate(Math.sin(Math.toRadians(pitch))), 0, 0);
         } else {

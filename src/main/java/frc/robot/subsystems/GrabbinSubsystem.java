@@ -15,11 +15,11 @@ public class GrabbinSubsystem extends SubsystemBase {
         solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void extend(){
+    public void close(){
         solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
-    public void retract(){
+    public void open(){
         solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 

@@ -108,6 +108,8 @@ public class DriveSubsystem extends SubsystemBase {
         driveGyroOffset = getRotation().getDegrees();
     }
 
+    public void invertZeroDriveGyro() {driveGyroOffset = getRotation().getDegrees() - 180;}
+
     public void zeroGyroYaw() {
         odometry.resetPosition(
                 Rotation2d.fromDegrees(-gyro.getFusedHeading()),

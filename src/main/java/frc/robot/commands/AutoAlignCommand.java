@@ -24,8 +24,8 @@ public class AutoAlignCommand extends CommandBase {
     private PID pidx = new PID(1.25, 0, 0.015, 0.6, 0, 0.01);
     private PID pidTurn = new PID(0.1, 0, 0.004, 1, 0, 1); //TODO turn speed back up
 
-    private double[] cubegoalY = new double[]{1, 2.75, 4.4};
-    private double[] conegoalY = new double[]{0.5, 1.6, 2.2, 3.3, 3.85, 4.95};
+    private double[] cubegoalY = new double[]{1.07, 2.75, 4.425};
+    private double[] conegoalY = new double[]{0.51, 1.63, 2.18, 3.3, 3.86, 4.98};
     private double targetY;
     private double targetX;
 

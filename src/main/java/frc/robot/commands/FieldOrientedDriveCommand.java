@@ -13,8 +13,11 @@ import frc.robot.subsystems.VisionSubsystem;
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
-    private PID pidTurn = new PID(0.075, 0, 0.004, 1.75, 0, 1);
+    private PID pidTurn = new PID(0.075, 0, 0.008, 1.75, 0, 1);
     private AHRS gyro;
+
+    private int turnOffset = 0;
+    private int leftRightMultiplier = 1;
 
     public FieldOrientedDriveCommand(DriveSubsystem driveSubsystem) {
         pidTurn.setGoal(0); //once again might be wrong if targeting the opposite side of the field
@@ -22,6 +25,17 @@ public class FieldOrientedDriveCommand extends CommandBase {
 
         this.driveSubsystem = driveSubsystem;
         addRequirements(driveSubsystem);
+    }
+
+    @Override
+    public void initialize() {
+        if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
+            turnOffset = 180;
+            leftRightMultiplier = 1;
+        } else {
+            turnOffset = 0;
+            leftRightMultiplier = -1;
+        }
     }
 
     public void execute() {
@@ -32,8 +46,22 @@ public class FieldOrientedDriveCommand extends CommandBase {
             input = getXboxInput();
         }
 
-        if (Constants.cXbox.getRightBumperPressed()) { //TODO ask drivers which would be best :D
-            input[2] = pidTurn.calculate(driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)).getDegrees());
+        double angleDifference = driveSubsystem.getRotation().getDegrees() - turnOffset;
+
+        if(angleDifference < -180){
+            angleDifference += 360;
+        } else if (angleDifference > 180) {
+            angleDifference -= 360;
+        }
+
+        if (Constants.cXbox.getRightBumper()) { //TODO ask drivers which would be best :D
+            input[2] = pidTurn.calculate(angleDifference);
+        }
+
+        if (Constants.cXbox.getRightTriggerAxis() > 0.25) {
+            input[1] = 0.2 * leftRightMultiplier;
+        } else if (Constants.cXbox.getLeftTriggerAxis() > .25) {
+            input[1] = -0.2 * leftRightMultiplier;
         }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed,
