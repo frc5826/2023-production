@@ -35,8 +35,8 @@ public class ArmSubsystem extends SubsystemBase {
         armMotor = new WPI_TalonSRX(cMiddleArmID);
         armMotor.setNeutralMode(NeutralMode.Brake);
 
-        armMotor.configPeakOutputForward(1, cTimeoutMs);
-        armMotor.configPeakOutputReverse(-1, cTimeoutMs);
+        armMotor.configPeakOutputForward(0.5, cTimeoutMs);
+        armMotor.configPeakOutputReverse(-0.5, cTimeoutMs);
 
         mastEncoder = new DutyCycleEncoder(cMastEncoderID);
         armEncoder = new DutyCycleEncoder(cArmEncoderID);
@@ -72,7 +72,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic() {
         super.periodic();
         mastSpeed = mastPID.calculate(getMastRad());
-        armSpeed = armPID.calculate(getArmRad());
+        armSpeed = -armPID.calculate(getArmRad());
 
         if (Math.abs(this.getMastRad() - cMastEncoderMax) < Math.PI / 36) {
             mastSpeed = Math.min(0, mastSpeed);
