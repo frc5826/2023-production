@@ -66,7 +66,6 @@ public class RobotContainer
         }
     }
 
-    SequentialCommandGroup homeArm = new SequentialCommandGroup(homeStageOneCommand, new WaitCommand(0.4), homeStageTwoCommand);
     SwerveAutoBuilder autoBuilder;
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
@@ -75,7 +74,9 @@ public class RobotContainer
     AutoAlignCommand autoAlignConeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, false);
 
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
-    GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem);
+    GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem, GrabType.TOGGLE);
+
+    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new WaitCommand(0.2), homeStageTwoCommand);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
     JoystickButton button3 = new JoystickButton(cJoystick, 3);
@@ -186,7 +187,7 @@ public class RobotContainer
                 new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem),
                 new ArmPresetPositionCommand(armSubsystem, cTopCube),
                 new AutoAlignCommand(driveSubsystem, visionSubsystem, true, 2.5),
-                new GrabbinCommand(grabbinSubsystem),
+                new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
                 comboBox.getSelected());
 
     }

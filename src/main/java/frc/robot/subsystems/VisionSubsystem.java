@@ -13,7 +13,7 @@ import frc.robot.Constants;
 public class VisionSubsystem extends SubsystemBase {
 
     private NetworkTable limeLight = NetworkTableInstance.getDefault().getTable("limelight-avis");
-    private double vertivalSize;
+    private double verticalSize;
     private double angleToTape;
     private NetworkTableEntry pipeline = limeLight.getEntry("pipeline");
     public double[] pos = new double[]{0, 0, 0, 0, 0, 0};
@@ -47,6 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         shuffleboardTab.addNumber("tape d", () -> getD());
         shuffleboardTab.addNumber("tape y", () -> getY());
+        shuffleboardTab.addNumber("tape x", () -> getX());
 
         shuffleboardTab.addNumber("reflective x", () -> getReflectivePos()[0]);
         shuffleboardTab.addNumber("reflective y", () -> getReflectivePos()[1]);
@@ -59,10 +60,10 @@ public class VisionSubsystem extends SubsystemBase {
 
         //visible = limeLight.getEntry("tv").getInteger(0) == 1;
 
-        vertivalSize = limeLight.getEntry("tvert").getDouble(0);
+        verticalSize = limeLight.getEntry("tvert").getDouble(0);
         angleToTape = limeLight.getEntry("tx").getDouble(0);
 
-        if (limeLight.getEntry("tv").getInteger(0) == 1 && id <= 8 && id > 0) {
+        if (limeLight.getEntry("tv").getInteger(0) == 1 && ((id <= 8 && id > 0) || id == -1)) {
             count++;
             if (count > 5) {
                 visible = limeLight.getEntry("tv").getInteger(0) == 1;
@@ -75,7 +76,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (visible) {
             savePos = pos;
             savePosRef[0] = getX() + Constants.llOffsetX;
-            savePosRef[1]= getY() + Constants.llOffsetY;
+            savePosRef[1] = getY() + Constants.llOffsetY;
             savePosX = DriveSubsystem.odometry.getPoseMeters().getX();
             savePosY = DriveSubsystem.odometry.getPoseMeters().getY();
         }
@@ -87,15 +88,15 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public double getD() {
-        return 4 / (Math.tan((vertivalSize / Constants.resHeight) * 25));
+        return .051 / (Math.tan((verticalSize / Constants.resHeight) * 25 * (Math.PI / 180)));
     }
 
     public double getY() {
-        return getD() * Math.sin(angleToTape);
+        return getD() * Math.sin(angleToTape * (Math.PI / 180)) + Constants.yOffset;
     }
 
     public double getX() {
-        return getD() * Math.cos(angleToTape) * Math.signum(angleToTape);
+        return getD() * Math.cos(angleToTape * (Math.PI / 180)) + Constants.xOffset;
     }
 
     public void conePipeline() {

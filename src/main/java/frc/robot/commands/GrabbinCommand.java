@@ -6,16 +6,29 @@ import frc.robot.subsystems.GrabbinSubsystem;
 public class GrabbinCommand extends CommandBase {
 
     GrabbinSubsystem grabbinSubsystem;
+    private GrabType grabType;
 
-    public GrabbinCommand(GrabbinSubsystem grabbinSubsystem){
+    public GrabbinCommand(GrabbinSubsystem grabbinSubsystem, GrabType grabType){
         this.grabbinSubsystem = grabbinSubsystem;
+        this.grabType = grabType;
         addRequirements(grabbinSubsystem);
     }
 
     @Override
     public void initialize() {
         super.initialize();
-        grabbinSubsystem.toggle();
+
+        switch (grabType){
+            case OPEN:
+                grabbinSubsystem.open();
+                break;
+            case CLOSE:
+                grabbinSubsystem.close();
+                break;
+            case TOGGLE:
+                grabbinSubsystem.toggle();
+                break;
+        }
     }
 
     @Override

@@ -69,18 +69,18 @@ public class AutoAlignCommand extends CommandBase {
             visionSubsystem.cubePipeline();
         } else{
             targetY = getClosestGoal(conegoalY);
-            visionSubsystem.cubePipeline();
+            visionSubsystem.conePipeline();
         }
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             targetX = 1.825;
             poleX = targetX - 1;
-            //invertDrive = -1;//TODO
+            invertDrive = 1;
             turnOffset = 180;
         } else {
             targetX = 14.725;
             poleX = targetX + 1;
-            //invertDrive = 1;
+            invertDrive = -1;
             turnOffset = 0;
         }
 
@@ -114,16 +114,16 @@ public class AutoAlignCommand extends CommandBase {
         ChassisSpeeds speeds;
         if (iscube) {
             speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
-                    pidx.calculate(pos[0]) * invertDrive,
-                    pidy.calculate(pos[1]) * invertDrive,
+                    pidx.calculate(pos[0]),
+                    pidy.calculate(pos[1]),
                     pidTurn.calculate(angleDifference),
 
                     driveSubsystem.getRotation()
             );
         } else {
             speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                    pidx.calculate(visionSubsystem.getReflectivePos()[0]),
-                    pidy.calculate(visionSubsystem.getReflectivePos()[1]),
+                    pidx.calculate(visionSubsystem.getReflectivePos()[0]) * invertDrive,
+                    pidy.calculate(visionSubsystem.getReflectivePos()[1]) * (invertDrive * -1),
                     pidTurn.calculate(angleDifference),
                     driveSubsystem.getRotation()
             );
