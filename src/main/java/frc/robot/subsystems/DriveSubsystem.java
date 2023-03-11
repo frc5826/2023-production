@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.revrobotics.CANSparkMax;
 import com.swervedrivespecialties.swervelib.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants;
+import frc.robot.commands.SetupGyroCommand;
 
 import java.util.HashMap;
 
@@ -48,8 +50,10 @@ public class DriveSubsystem extends SubsystemBase {
         Add the negative of the current angle from the shuffleboard to the steer offset
         Once again enable the robot and disable it and unplug the cancoder and plug it in
          */
+        MkModuleConfiguration configuration = MkModuleConfiguration.getDefaultSteerNEO();
+        configuration.setDriveCurrentLimit(50);
 
-        frontLeftModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Front Left Module", BuiltInLayouts.kList)
+        frontLeftModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Front Left Module", BuiltInLayouts.kList)
                 .withSize(2, 2)
                 .withPosition(0, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
@@ -59,7 +63,7 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSteerOffset(Math.toRadians(-offsets[0]))
                 .build();
 
-        frontRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
+        frontRightModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(2, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
@@ -69,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSteerOffset(Math.toRadians(-offsets[1]))
                 .build();
 
-        backRightModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
+        backRightModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(4, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
@@ -79,7 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSteerOffset(Math.toRadians(-offsets[2]))
                 .build();
 
-        backLeftModule = new MkSwerveModuleBuilder().withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
+        backLeftModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(6, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
@@ -88,6 +92,8 @@ public class DriveSubsystem extends SubsystemBase {
                 .withSteerEncoderPort(53)
                 .withSteerOffset(Math.toRadians(-offsets[3]))
                 .build();
+
+        setRampRates(frontLeftModule, frontRightModule, backLeftModule, backRightModule);
 
         this.kinematics = kinematics;
 
@@ -102,6 +108,13 @@ public class DriveSubsystem extends SubsystemBase {
         shuffleboardTab.addNumber("Roll" , () -> getGyroRoll());
         shuffleboardTab.addNumber("Pitch", () -> getGyroPitch());
 
+        shuffleboardTab.addNumber("Gyro Offset", () -> driveGyroOffset);
+
+    }
+
+    private void setRampRates(SwerveModule... swerveModules) {
+        for(var s : swerveModules)
+        ((CANSparkMax) s.getDriveMotor()).setOpenLoopRampRate(Constants.rampRate);
     }
 
     public void zeroDriveGyro() {

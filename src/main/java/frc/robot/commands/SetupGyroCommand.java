@@ -28,8 +28,10 @@ public class SetupGyroCommand extends CommandBase {
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             driveSubsystem.invertGyroYaw();
+            driveSubsystem.zeroDriveGyro();
         } else {
             driveSubsystem.zeroGyroYaw();
+            driveSubsystem.invertZeroDriveGyro();
         }
 
         driveSubsystem.zeroGyroRollPitch();

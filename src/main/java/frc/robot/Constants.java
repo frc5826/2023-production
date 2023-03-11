@@ -63,6 +63,7 @@ public class Constants {
     public static final double cArmMaxSpeed = 0.4;
 
     public static final double cDriveSpeed = 5;
+    public static final double onlyDriverSpeed = 1.4;
     public static final double cTurnSpeed = 1.5;
 
     public static Trigger cXboxStart = new Trigger(() -> cXbox.getStartButtonPressed());
@@ -107,7 +108,7 @@ public class Constants {
     public static final int cSolenoidREV = 7;
 
     public static final double[] cCompetitionOffsets = {
-            246,
+            316.05,
             204.5,
             333.2 - 180,
             127.7
@@ -145,5 +146,11 @@ public class Constants {
     public static int[] cCompetitionSpeedControllers = {6, 5, 4, 3, 2, 1, 8, 7};
 
     public static int[] cTestSpeedControllers = {2, 1, 4, 3, 6, 5, 8, 7};
+
+    public static double rampRate = 1;
+
+    public static double llOffsetX = 0.1959;
+    public static double llOffsetY = -0.28;
+    public static double resHeight = 480;
 
 }

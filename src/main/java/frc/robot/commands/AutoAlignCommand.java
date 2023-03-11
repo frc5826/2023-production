@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PID;
 import frc.robot.subsystems.VisionSubsystem;
@@ -28,6 +29,7 @@ public class AutoAlignCommand extends CommandBase {
     private double[] conegoalY = new double[]{0.51, 1.63, 2.18, 3.3, 3.86, 4.98};
     private double targetY;
     private double targetX;
+    private double poleX;
 
     private boolean iscube;
 
@@ -64,22 +66,32 @@ public class AutoAlignCommand extends CommandBase {
     public void initialize() {
         if (iscube) {
             targetY = getClosestGoal(cubegoalY);
-        }else{
+            visionSubsystem.cubePipeline();
+        } else{
             targetY = getClosestGoal(conegoalY);
+            visionSubsystem.cubePipeline();
         }
 
         if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)) {
             targetX = 1.825;
+            poleX = targetX - 1;
             //invertDrive = -1;//TODO
             turnOffset = 180;
         } else {
             targetX = 14.725;
+            poleX = targetX + 1;
             //invertDrive = 1;
             turnOffset = 0;
         }
 
-        pidx.setGoal(targetX);
-        pidy.setGoal(targetY);
+        if (iscube) {
+            pidx.setGoal(targetX);
+            pidy.setGoal(targetY);
+        } else {
+            pidx.setGoal(1);
+            pidy.setGoal(0);
+        }
+
 
         finished = false;
 
@@ -99,13 +111,24 @@ public class AutoAlignCommand extends CommandBase {
             angleDifference -= 360;
         }
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
-                pidx.calculate(pos[0]) * invertDrive,
-                pidy.calculate(pos[1]) * invertDrive,
-                pidTurn.calculate(angleDifference),
+        ChassisSpeeds speeds;
+        if (iscube) {
+            speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
+                    pidx.calculate(pos[0]) * invertDrive,
+                    pidy.calculate(pos[1]) * invertDrive,
+                    pidTurn.calculate(angleDifference),
 
-                driveSubsystem.getRotation()
-        );
+                    driveSubsystem.getRotation()
+            );
+        } else {
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                    pidx.calculate(visionSubsystem.getReflectivePos()[0]),
+                    pidy.calculate(visionSubsystem.getReflectivePos()[1]),
+                    pidTurn.calculate(angleDifference),
+                    driveSubsystem.getRotation()
+            );
+        }
+
 
         driveSubsystem.drive(speeds);
 

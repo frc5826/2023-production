@@ -105,6 +105,8 @@ public class RobotContainer
 
         dashboard.add("Command Chooser", comboBox).withSize(2,2).withPosition(7, 0);
 
+        dashboard.add(new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem));
+
         comboBox.getSelected();
 
         // Configure the trigger bindings

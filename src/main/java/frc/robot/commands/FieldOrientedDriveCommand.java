@@ -64,7 +64,7 @@ public class FieldOrientedDriveCommand extends CommandBase {
             input[1] = -0.2 * leftRightMultiplier;
         }
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0], input[1], input[2] * Constants.cTurnSpeed,
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0] * Constants.onlyDriverSpeed, input[1] * Constants.onlyDriverSpeed, input[2] * Constants.cTurnSpeed,
                 driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)));
         driveSubsystem.drive(speeds);
 
