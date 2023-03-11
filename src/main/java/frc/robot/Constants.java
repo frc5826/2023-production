@@ -57,7 +57,7 @@ public class Constants {
     public static final double cMastI = 0.5;
     public static final double cMastD = 0;
     public static final double cMastMaxSpeed = 0.4;
-    public static final double cArmP = 3;
+    public static final double cArmP = 0.5;
     public static final double cArmI = 0;
     public static final double cArmD = 0;
     public static final double cArmMaxSpeed = 0.4;
