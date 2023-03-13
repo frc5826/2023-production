@@ -28,7 +28,15 @@ public class VisionSubsystem extends SubsystemBase {
     private double savePosX = 0;
     private double savePosY = 0;
 
+    private int sees;
+
+    private boolean isRefPipe = false;
+
     private int count = 0;
+
+    public boolean switched = false;
+
+    private double pipelineID;
 
     public VisionSubsystem() {
         pipeline.setDouble(0);
@@ -51,6 +59,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         shuffleboardTab.addNumber("reflective x", () -> getReflectivePos()[0]);
         shuffleboardTab.addNumber("reflective y", () -> getReflectivePos()[1]);
+
     }
 
     @Override
@@ -58,10 +67,14 @@ public class VisionSubsystem extends SubsystemBase {
         pos = limeLight.getEntry("botpose_wpiblue").getDoubleArray(new double[]{0, 0, 0, 0, 0, 0});
         id = (int) limeLight.getEntry("tid").getInteger(0);
 
+        pipelineID = limeLight.getEntry("getpipe").getDouble(-1);
+
         //visible = limeLight.getEntry("tv").getInteger(0) == 1;
 
         verticalSize = limeLight.getEntry("tvert").getDouble(0);
         angleToTape = limeLight.getEntry("tx").getDouble(0);
+
+        sees = (int) limeLight.getEntry("tv").getInteger(0);
 
         if (limeLight.getEntry("tv").getInteger(0) == 1 && ((id <= 8 && id > 0) || id == -1)) {
             count++;
@@ -101,10 +114,12 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void conePipeline() {
         pipeline.setDouble(1);
+        isRefPipe = true;
     }
 
     public void cubePipeline() {
         pipeline.setDouble(0);
+        isRefPipe = false;
     }
 
     public double[] getComboPos() {
@@ -121,6 +136,15 @@ public class VisionSubsystem extends SubsystemBase {
             comboPos[1] = savePos[1] + (DriveSubsystem.odometry.getPoseMeters().getY() - savePosY);
         }
 
+    }
+
+    public boolean isPipeline() {
+//        if (id == -1 && sees == 1 && isRefPipe || (id <= 8 && id > 0) && sees == 1 && isRefPipe == false) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return pipelineID == pipeline.getDouble(-1);
     }
 
     private void setReflectivePos() {

@@ -112,22 +112,29 @@ public class AutoAlignCommand extends CommandBase {
         }
 
         ChassisSpeeds speeds;
-        if (iscube) {
-            speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
-                    pidx.calculate(pos[0]),
-                    pidy.calculate(pos[1]),
-                    pidTurn.calculate(angleDifference),
+        if (visionSubsystem.isPipeline()) {
+            if (iscube) {
+                speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
+                        pidx.calculate(pos[0]),
+                        pidy.calculate(pos[1]),
+                        pidTurn.calculate(angleDifference),
 
-                    driveSubsystem.getRotation()
-            );
+                        driveSubsystem.getRotation()
+                );
+            } else {
+                speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                        pidx.calculate(visionSubsystem.getReflectivePos()[0]) * invertDrive,
+                        pidy.calculate(visionSubsystem.getReflectivePos()[1]) * (invertDrive * -1),
+                        pidTurn.calculate(angleDifference),
+                        driveSubsystem.getRotation()
+                );
+            }
         } else {
-            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                    pidx.calculate(visionSubsystem.getReflectivePos()[0]) * invertDrive,
-                    pidy.calculate(visionSubsystem.getReflectivePos()[1]) * (invertDrive * -1),
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(0, 0,
                     pidTurn.calculate(angleDifference),
-                    driveSubsystem.getRotation()
-            );
+                    driveSubsystem.getRotation());
         }
+
 
 
         driveSubsystem.drive(speeds);

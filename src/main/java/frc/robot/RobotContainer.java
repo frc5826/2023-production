@@ -6,6 +6,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -104,9 +105,17 @@ public class RobotContainer
         comboBox.addOption("Center blue (7)", autoPath("Center start blue", 0.8f));
         comboBox.addOption("Bottom blue (8)", autoPath("Bottom start blue", 1.3f));
 
+        comboBox.addOption("Test path", autoPath("Test path", 0.8f));
+
         dashboard.add("Command Chooser", comboBox).withSize(2,2).withPosition(7, 0);
 
         dashboard.add(new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem));
+
+        dashboard.add(new SequentialCommandGroup(
+                new InstantCommand(() ->
+                {driveSubsystem.resetOdometryButCool(new double[]{2.2, 2.75});
+                driveSubsystem.zeroGyroYaw();}),
+                autoPath("New Path", 1.5f)));
 
         comboBox.getSelected();
 

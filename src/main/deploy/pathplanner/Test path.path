@@ -39,7 +39,7 @@
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [
           "homeArm"
@@ -124,5 +124,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.8000000000000002,
+      "names": [
+        "homeArm"
+      ]
+    }
+  ]
 }

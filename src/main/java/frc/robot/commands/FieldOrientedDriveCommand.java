@@ -13,7 +13,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
-    private PID pidTurn = new PID(0.075, 0, 0.008, 1.75, 0, 1);
+    private PID pidTurn = new PID(0.07, 0, 0.01, 1.75, 0, 1);
     private AHRS gyro;
 
     private int turnOffset = 0;
@@ -59,9 +59,9 @@ public class FieldOrientedDriveCommand extends CommandBase {
         }
 
         if (Constants.cXbox.getRightTriggerAxis() > 0.25) {
-            input[1] = 0.2 * leftRightMultiplier;
+            input[1] = 0.2;
         } else if (Constants.cXbox.getLeftTriggerAxis() > .25) {
-            input[1] = -0.2 * leftRightMultiplier;
+            input[1] = -0.2;
         }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0] * Constants.onlyDriverSpeed, input[1] * Constants.onlyDriverSpeed, input[2] * Constants.cTurnSpeed,
