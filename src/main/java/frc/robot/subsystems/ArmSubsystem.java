@@ -29,14 +29,14 @@ public class ArmSubsystem extends SubsystemBase {
         mastMotor = new WPI_TalonSRX(cBaseArmID);
         mastMotor.setNeutralMode(NeutralMode.Brake);
 
-        mastMotor.configPeakOutputForward(0.4, cTimeoutMs);
-        mastMotor.configPeakOutputReverse(-0.4, cTimeoutMs);
+        mastMotor.configPeakOutputForward(cPeakMastOutputForward, cTimeoutMs);
+        mastMotor.configPeakOutputReverse(cPeakArmOutputBackward, cTimeoutMs);
 
         armMotor = new WPI_TalonSRX(cMiddleArmID);
         armMotor.setNeutralMode(NeutralMode.Brake);
 
-        armMotor.configPeakOutputForward(0.5, cTimeoutMs);
-        armMotor.configPeakOutputReverse(-0.5, cTimeoutMs);
+        armMotor.configPeakOutputForward(-cPeakArmOutputBackward, cTimeoutMs);
+        armMotor.configPeakOutputReverse(-cPeakArmOutputForward, cTimeoutMs);
 
         mastEncoder = new DutyCycleEncoder(cMastEncoderID);
         armEncoder = new DutyCycleEncoder(cArmEncoderID);
@@ -111,11 +111,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setMastSpeed(double speed){
-        mastMotor.set(Math.min(Math.max(speed, -cMastMaxSpeed), cMastMaxSpeed));
+        mastMotor.set(Math.min(Math.max(speed, cPeakMastOutputBackward), cPeakMastOutputForward));
     }
 
     public void setArmSpeed(double speed){
-        armMotor.set(Math.min(Math.max(speed, -cArmMaxSpeed), cArmMaxSpeed));
+        armMotor.set(Math.min(Math.max(speed, cPeakArmOutputBackward), cPeakArmOutputForward));
     }
 
     public double getMastPosition(){
