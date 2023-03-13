@@ -71,7 +71,9 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         super.periodic();
-        mastSpeed = mastPID.calculate(getMastRad());
+        double mastCalc = mastPID.calculate(getMastRad());
+        if(mastCalc >= 7)//TODO make the mast motor stop after reaching home
+        mastSpeed = mastCalc;
         armSpeed = -armPID.calculate(getArmRad());
 
         if (Math.abs(this.getMastRad() - cMastEncoderMax) < Math.PI / 36) {
