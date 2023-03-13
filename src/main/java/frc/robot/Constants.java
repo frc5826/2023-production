@@ -61,8 +61,8 @@ public class Constants {
     public static final double cArmP = 0.5;
     public static final double cArmI = 0;
     public static final double cArmD = 0;
-    public static final double cPeakArmOutputForward = 0.7;
-    public static final double cPeakArmOutputBackward = -0.5;
+    public static final double cPeakArmOutputForward = 0.6;
+    public static final double cPeakArmOutputBackward = -0.4;
 
     public static final double cDriveSpeed = 5;
     public static final double onlyDriverSpeed = 1.4;
