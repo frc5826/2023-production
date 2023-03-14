@@ -9,7 +9,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         addCommands(
               setupGyroCommand,
               topCube,
-              new WaitCommand(4),
+              new WaitCommand(1.7),
               autoAlign,
               drop,
               pathPlanner

@@ -51,6 +51,8 @@ public class ArmPresetPositionCommand extends CommandBase {
                 this.armTargetRad = segmentTargetRad;
                 break;
         }
+        this.armSubsystem = armSubsystem;
+        addRequirements(armSubsystem);
     }
 
     @Override

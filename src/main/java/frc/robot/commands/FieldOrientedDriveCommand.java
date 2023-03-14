@@ -59,9 +59,9 @@ public class FieldOrientedDriveCommand extends CommandBase {
         }
 
         if (Constants.cXbox.getRightTriggerAxis() > 0.25) {
-            input[1] = 0.2;
-        } else if (Constants.cXbox.getLeftTriggerAxis() > .25) {
             input[1] = -0.2;
+        } else if (Constants.cXbox.getLeftTriggerAxis() > .25) {
+            input[1] = 0.2;
         }
 
         ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0] * Constants.onlyDriverSpeed, input[1] * Constants.onlyDriverSpeed, input[2] * Constants.cTurnSpeed,

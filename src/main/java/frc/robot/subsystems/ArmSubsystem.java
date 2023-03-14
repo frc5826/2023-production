@@ -92,12 +92,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setMastTargetRad(double setpoint){
+        mastPID.reset();
         mastTargetAngle = Math.max(Math.min(setpoint, cMastEncoderMax), cMastEncoderMin);
         System.out.println("Mast target set to " + mastTargetAngle);
         mastPID.setSetpoint(mastTargetAngle);
     }
 
     public void setArmTargetRad(double setpoint){
+        armPID.reset();
         armTargetAngle = Math.max(Math.min(setpoint, cArmEncoderMax), cArmEncoderMin);
         System.out.println("Arm target set to " + armTargetAngle);
         armPID.setSetpoint(armTargetAngle);

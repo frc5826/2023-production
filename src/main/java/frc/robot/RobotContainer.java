@@ -78,7 +78,7 @@ public class RobotContainer
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem, GrabType.TOGGLE);
 
-    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new WaitCommand(0.3), homeStageTwoCommand);
+    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new WaitCommand(0.5), homeStageTwoCommand);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
     JoystickButton button3 = new JoystickButton(cJoystick, 3);
@@ -208,7 +208,11 @@ public class RobotContainer
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("homeArm", new SequentialCommandGroup(new ArmPresetPositionCommand(armSubsystem, cHomeStageOne), new WaitCommand(0.4), new ArmPresetPositionCommand(armSubsystem), new WaitCommand(0)));
+        eventMap.put("homeArm", new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem,
+                GrabType.CLOSE),
+                new ArmPresetPositionCommand(armSubsystem, cHomeStageOne),
+                new WaitCommand(0.3),
+                new ArmPresetPositionCommand(armSubsystem)));
         eventMap.put("groundPickUp", groundPickupCommand);
         eventMap.put("grab", grabbinCommand);
         eventMap.put("autoAlignCube", autoAlignCubeCommand);
