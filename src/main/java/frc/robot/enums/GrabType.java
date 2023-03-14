@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.enums;
 
 public enum GrabType {
     OPEN,

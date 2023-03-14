@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.enums.GrabType;
 import frc.robot.subsystems.GrabbinSubsystem;
 
 public class GrabbinCommand extends CommandBase {

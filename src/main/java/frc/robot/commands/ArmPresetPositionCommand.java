@@ -1,13 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.enums.ArmControlMode;
 import frc.robot.fabrik.Point;
 import frc.robot.subsystems.ArmSubsystem;
-
-enum ArmControlMode{
-    POINT,
-    ANGLES
-}
 
 public class ArmPresetPositionCommand extends CommandBase {
 
@@ -45,6 +41,18 @@ public class ArmPresetPositionCommand extends CommandBase {
         addRequirements(armSubsystem);
     }
 
+    public ArmPresetPositionCommand(ArmSubsystem armSubsystem, double segmentTargetRad, ArmControlMode armControlMode){
+        this.armControlMode = armControlMode;
+        switch (armControlMode){
+            case MAST:
+                this.mastTargetRad = segmentTargetRad;
+                break;
+            case ARM:
+                this.armTargetRad = segmentTargetRad;
+                break;
+        }
+    }
+
     @Override
     public void initialize() {
         super.initialize();
@@ -60,6 +68,12 @@ public class ArmPresetPositionCommand extends CommandBase {
 
             case ANGLES:
                 armSubsystem.setMastTargetRad(mastTargetRad);
+                armSubsystem.setArmTargetRad(armTargetRad);
+                break;
+            case MAST:
+                armSubsystem.setMastTargetRad(mastTargetRad);
+                break;
+            case ARM:
                 armSubsystem.setArmTargetRad(armTargetRad);
                 break;
         }
