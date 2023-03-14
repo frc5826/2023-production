@@ -53,16 +53,16 @@ public class Constants {
     public static final double cArmEncoderMax = Math.toRadians(117);
     public static final double cArmEncoderMin = Math.toRadians(15);//
 
-    public static final double cMastP = 8;
+    public static final double cMastP = 7.5;
     public static final double cMastI = 0.5;
-    public static final double cMastD = 0;
+    public static final double cMastD = 0.4;
     public static final double cPeakMastOutputForward = 0.4;
     public static final double cPeakMastOutputBackward = -0.4;
-    public static final double cArmP = 0.5;
+    public static final double cArmP = 1;
     public static final double cArmI = 0;
     public static final double cArmD = 0;
-    public static final double cPeakArmOutputForward = 0.6;
-    public static final double cPeakArmOutputBackward = -0.4;
+    public static final double cPeakArmOutputForward = 0.7;
+    public static final double cPeakArmOutputBackward = -0.5;
 
     public static final double cDriveSpeed = 5;
     public static final double onlyDriverSpeed = 1.4;
@@ -110,10 +110,10 @@ public class Constants {
     public static final int cSolenoidREV = 7;
 
     public static final double[] cCompetitionOffsets = {
-            316.05,
-            204.5,
-            333.2 - 180,
-            127.7
+            245.6,
+            319.5,
+            164,
+            276.4
     };
 
     public static final double[] cTestOffsets = {

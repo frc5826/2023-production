@@ -32,6 +32,8 @@ public class ArmSubsystem extends SubsystemBase {
         mastMotor.configPeakOutputForward(cPeakMastOutputForward, cTimeoutMs);
         mastMotor.configPeakOutputReverse(cPeakArmOutputBackward, cTimeoutMs);
 
+        mastMotor.setInverted(true);
+
         armMotor = new WPI_TalonSRX(cMiddleArmID);
         armMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -72,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic() {
         super.periodic();
         double mastCalc = mastPID.calculate(getMastRad());
-        if(mastCalc >= cMastEncoderMax - Math.toRadians(3) && getMastRad() >= cMastEncoderMax - Math.toRadians(3)){
+        if(Math.toRadians(getMastTargetAngle()) >= cMastEncoderMax - Math.toRadians(3) && getMastRad() >= cMastEncoderMax - Math.toRadians(3)){
             mastSpeed = 0;
         }
         else{
