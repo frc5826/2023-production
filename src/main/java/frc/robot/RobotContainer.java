@@ -78,7 +78,7 @@ public class RobotContainer
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem, GrabType.TOGGLE);
 
-    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new WaitCommand(0.5), homeStageTwoCommand);
+    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.5, 45), homeStageTwoCommand);
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
     JoystickButton button3 = new JoystickButton(cJoystick, 3);
