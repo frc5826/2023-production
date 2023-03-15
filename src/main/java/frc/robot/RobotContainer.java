@@ -78,7 +78,7 @@ public class RobotContainer
     GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
     GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem, GrabType.TOGGLE);
 
-    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.5, 45), homeStageTwoCommand);
+    SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.5, 45),  new ArmPresetPositionCommand(armSubsystem));
 
     JoystickButton trigger = new JoystickButton(cJoystick, 1);
     JoystickButton button3 = new JoystickButton(cJoystick, 3);
@@ -99,11 +99,11 @@ public class RobotContainer
         comboBox.setDefaultOption("No exit (any)", new InstantCommand());
 
         comboBox.addOption("Top red (3)", autoPath("Top start red", 1.3f));
-        comboBox.addOption("Center red (2)", autoPath("Center start red", 0.8f));
+        comboBox.addOption("Center red (2)", autoPath("Center start red", 0.9f));
         comboBox.addOption("Bottom red (1)", autoPath("Bottom start red", 1.3f));
 
         comboBox.addOption("Top blue (6)", autoPath("Top start blue", 1.3f));
-        comboBox.addOption("Center blue (7)", autoPath("Center start blue", 0.8f));
+        comboBox.addOption("Center blue (7)", autoPath("Center start blue", 0.9f));
         comboBox.addOption("Bottom blue (8)", autoPath("Bottom start blue", 1.3f));
 
         comboBox.addOption("Test path", autoPath("Test path", 0.8f));
@@ -203,16 +203,12 @@ public class RobotContainer
     }
 
     private Command autoPath(String path, float vel) {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup(path, vel, 1));
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup(path, vel, 1.5));
     }
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("homeArm", new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem,
-                GrabType.CLOSE),
-                new ArmPresetPositionCommand(armSubsystem, cHomeStageOne),
-                new WaitCommand(0.3),
-                new ArmPresetPositionCommand(armSubsystem)));
+        eventMap.put("homeArm", new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE),  new ArmPresetPositionCommand(armSubsystem, cMastEncoderMax, ArmControlMode.MAST), new MastWaitCommand(armSubsystem, 0.5, 45), homeStageTwoCommand));
         eventMap.put("groundPickUp", groundPickupCommand);
         eventMap.put("grab", grabbinCommand);
         eventMap.put("autoAlignCube", autoAlignCubeCommand);
@@ -220,8 +216,15 @@ public class RobotContainer
         eventMap.put("dropHighCone", topConeCommand);
         eventMap.put("autoBalance", new AutoBalanceCommand(driveSubsystem));
 
+        eventMap.put("waitTinyTime", new WaitCommand(0.1));
+        eventMap.put("waitHalfSec", new WaitCommand(.5));
         eventMap.put("wait2sec", new WaitCommand(2));
         eventMap.put("wait3sec", new WaitCommand(3));
+
+        eventMap.put("grabGroup", new SequentialCommandGroup(
+                new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
+                new WaitCommand(2),
+                new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE)));
 
         return eventMap;
     }
