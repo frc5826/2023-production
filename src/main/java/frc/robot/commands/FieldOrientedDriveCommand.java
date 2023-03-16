@@ -56,6 +56,8 @@ public class FieldOrientedDriveCommand extends CommandBase {
 
         if (Constants.cXbox.getRightBumper()) { //TODO ask drivers which would be best :D
             input[2] = pidTurn.calculate(angleDifference);
+        } else if (Constants.cXbox.getLeftBumper()) {
+            input[2] = pidTurn.calculate(angleDifference - 180);
         }
 
         if (Constants.cXbox.getRightTriggerAxis() > 0.25) {
