@@ -13,7 +13,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
-    private PID pidTurn = new PID(0.07, 0, 0.01, 1.75, 0, 1);
+    private PID pidTurn = new PID(0.08, 0, 0.025, 1.5, 0.1, 1);
     private AHRS gyro;
 
     private int turnOffset = 0;

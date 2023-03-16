@@ -7,8 +7,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.282448564897129,
-        "y": 4.523458761203237
+        "x": 14.32539279364273,
+        "y": 4.680920933270438
       },
       "holonomicAngle": 0.0,
       "isReversal": false,
@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 12.750771072970718,
-        "y": 4.766809390761639
+        "x": 13.433504783676234,
+        "y": 4.88490601981204
       },
       "prevControl": {
-        "x": 13.561567756162937,
-        "y": 4.667931746469905
+        "x": 14.239504336151528,
+        "y": 4.752494647846439
       },
       "nextControl": {
-        "x": 12.163866613447512,
-        "y": 4.83838310533764
+        "x": 12.825517756673085,
+        "y": 4.984787460360658
       },
       "holonomicAngle": 0.0,
       "isReversal": false,
@@ -51,51 +51,21 @@
     },
     {
       "anchorPoint": {
-        "x": 10.6,
-        "y": 4.61
+        "x": 10.260403437473542,
+        "y": 4.578729574125815
       },
       "prevControl": {
-        "x": 11.458609804620798,
-        "y": 4.840063803761589
-      },
-      "nextControl": {
-        "x": 10.502228487645967,
-        "y": 4.5838022022219675
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 10.131173119489096,
-        "y": 4.61
-      },
-      "prevControl": {
-        "x": 10.403496148926434,
-        "y": 4.61
+        "x": 11.70778299889933,
+        "y": 4.78748624163915
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "groundPickUp",
-          "waitTinyTime",
-          "grabGroup",
-          "homeArm"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
@@ -104,7 +74,7 @@
   ],
   "markers": [
     {
-      "position": 0.38,
+      "position": 0.8181818181818188,
       "names": [
         "homeArm"
       ]

@@ -102,6 +102,7 @@ public class Constants {
     public static final Point cShelfPickup = new Point(22.75 + cArmBufferX, 34 + cArmBufferY);
 
     public static final Point cGroundPickup = new Point(4, 0);
+    public static final Point cGroundPickup2 = new Point(7, 0);
     public static final Point cGroundDropoff = new Point(6, 9);
     public static final Point cArmOrigin = new Point(-17, 10);
 
@@ -149,7 +150,7 @@ public class Constants {
 
     public static int[] cTestSpeedControllers = {2, 1, 4, 3, 6, 5, 8, 7};
 
-    public static double rampRate = 1;
+    public static double rampRate = .5;
 
     public static double llOffsetX = 0.1959;
     public static double llOffsetY = -0.28;
