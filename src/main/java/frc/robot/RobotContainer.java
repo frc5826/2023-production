@@ -113,6 +113,8 @@ public class RobotContainer
 
         dashboard.add(new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem));
 
+        dashboard.addNumber("Drive speed", () -> Constants.cDriveSpeed);
+
 //        dashboard.add(new SequentialCommandGroup(
 //                new InstantCommand(() ->
 //                {driveSubsystem.resetOdometryButCool(new double[]{2.2, 2.75});
@@ -210,28 +212,33 @@ public class RobotContainer
     }
 
     private Command autoPath(String path, float vel) {
-        return autoBuilder.fullAuto(PathPlanner.loadPathGroup(path, vel, 1.5));
+        return autoBuilder.fullAuto(PathPlanner.loadPathGroup(path, vel, 2));
     }
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("homeArm", homeArmCommand());
-        eventMap.put("groundPickUp", groundPickup2Command);
+        eventMap.put("groundPickUp", groundPickupCommand);
         eventMap.put("grab", grabbinCommand);
         eventMap.put("autoAlignCube", autoAlignCubeCommand);
-        eventMap.put("autoAlignCone", autoAlignConeCommand);
-        eventMap.put("highCone", topConeCommand);
+        eventMap.put("autoAlignCone", new AutoAlignCommand(driveSubsystem, visionSubsystem, false, 2));
+        eventMap.put("topCone", topConeCommand);
         eventMap.put("autoBalance", new AutoBalanceCommand(driveSubsystem));
 
         eventMap.put("waitTinyTime", new WaitCommand(0.1));
         eventMap.put("waitHalfSec", new WaitCommand(.5));
         eventMap.put("wait2sec", new WaitCommand(2));
         eventMap.put("wait3sec", new WaitCommand(3));
+        eventMap.put("waitRaiseArm", new WaitCommand(1.6));
+
+        eventMap.put("setSpeed3", new SetSpeedCommand(driveSubsystem, 3));
+        eventMap.put("setSpeed5", new SetSpeedCommand(driveSubsystem, 5));
 
         eventMap.put("grabGroup", new SequentialCommandGroup(
                 new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
-                new WaitCommand(2),
-                new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE)));
+                new WaitCommand(1.1),
+                new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE),
+                new SetSpeedCommand(driveSubsystem, 5)));
 
         return eventMap;
     }

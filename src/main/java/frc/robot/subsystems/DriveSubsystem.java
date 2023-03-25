@@ -113,8 +113,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private void setRampRates(SwerveModule... swerveModules) {
-        for(var s : swerveModules)
-        ((CANSparkMax) s.getDriveMotor()).setOpenLoopRampRate(Constants.rampRate);
+        for(var s : swerveModules) {
+            ((CANSparkMax) s.getDriveMotor()).setOpenLoopRampRate(Constants.rampRate);
+        }
     }
 
     public void zeroDriveGyro() {

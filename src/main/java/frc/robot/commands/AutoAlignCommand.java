@@ -139,7 +139,7 @@ public class AutoAlignCommand extends CommandBase {
 
         driveSubsystem.drive(speeds);
 
-        double deadband = 0.025;
+        double deadband = 0.05;
 
         if (pos[1] < targetY + deadband && pos[1] > targetY - deadband && pos[0] < targetX + deadband && pos[0] > targetX - deadband) {
             finished = true;
