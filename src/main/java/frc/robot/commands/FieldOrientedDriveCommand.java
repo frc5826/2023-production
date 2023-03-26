@@ -13,7 +13,7 @@ import frc.robot.subsystems.VisionSubsystem;
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
-    private PID pidTurn = new PID(0.05, 0, 0.05, 1.5, 0.1, 1);
+    private PID pidTurn = new PID(0.025, 0, 0.0053, 1, 0.1, 1);
     private AHRS gyro;
 
     private int turnOffset = 0;
@@ -41,7 +41,7 @@ public class FieldOrientedDriveCommand extends CommandBase {
     public void execute() {
         double[] input = new double[3];
         if (DriverStation.isJoystickConnected(0)) {
-            input = getJoystickInput();
+            //input = getJoystickInput();
         } else {
             input = getXboxInput();
         }
@@ -56,9 +56,10 @@ public class FieldOrientedDriveCommand extends CommandBase {
 
         if (Constants.cXbox.getRightBumper()) { //TODO ask drivers which would be best :D
             input[2] = pidTurn.calculate(angleDifference);
-        } else if (Constants.cXbox.getLeftBumper()) {
-            input[2] = pidTurn.calculate(angleDifference - 180);
         }
+//        } else if (Constants.cXbox.getLeftBumper()) {
+//            input[2] = pidTurn.calculate(angleDifference - 180);
+//        }
 
         if (Constants.cXbox.getRightTriggerAxis() > 0.25) {
             input[1] = -0.2;
@@ -72,22 +73,22 @@ public class FieldOrientedDriveCommand extends CommandBase {
 
     }
 
-    public double[] getJoystickInput() {
-        double joystickY = Constants.cJoystick.getY() * Math.abs(Constants.cJoystick.getY()) * -1;
-        double joystickX = Constants.cJoystick.getX() * Math.abs(Constants.cJoystick.getX()) * -1;
-        double joystickZ = Constants.cJoystick.getZ() * Math.abs(Constants.cJoystick.getZ()) * -1;
-
-        if  (Math.abs(joystickY) <= Constants.cJoystickMin) {
-            joystickY = 0.0; }
-        if (Math.abs(joystickX) <= Constants.cJoystickMin) {
-            joystickX = 0.0; }
-        if (Math.abs(joystickZ) <= Constants.cJoystickMin) {
-            joystickZ = 0.0; }
-
-        double[] joystickReturn = new double[] {joystickY, joystickX, joystickZ};
-
-        return joystickReturn;
-    }
+//    public double[] getJoystickInput() {
+//        double joystickY = Constants.cJoystick.getY() * Math.abs(Constants.cJoystick.getY()) * -1;
+//        double joystickX = Constants.cJoystick.getX() * Math.abs(Constants.cJoystick.getX()) * -1;
+//        double joystickZ = Constants.cJoystick.getZ() * Math.abs(Constants.cJoystick.getZ()) * -1;
+//
+//        if  (Math.abs(joystickY) <= Constants.cJoystickMin) {
+//            joystickY = 0.0; }
+//        if (Math.abs(joystickX) <= Constants.cJoystickMin) {
+//            joystickX = 0.0; }
+//        if (Math.abs(joystickZ) <= Constants.cJoystickMin) {
+//            joystickZ = 0.0; }
+//
+//        double[] joystickReturn = new double[] {joystickY, joystickX, joystickZ};
+//
+//        return joystickReturn;
+//    }
 
     public double[] getXboxInput() {
         double xboxLeftY = Constants.cXbox.getLeftY() * -1;

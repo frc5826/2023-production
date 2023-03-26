@@ -81,12 +81,12 @@ public class RobotContainer
 
     //SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.7, 45),  new ArmPresetPositionCommand(armSubsystem));
 
-    JoystickButton trigger = new JoystickButton(cJoystick, 1);
-    JoystickButton button3 = new JoystickButton(cJoystick, 3);
-    JoystickButton button4 = new JoystickButton(cJoystick, 4);
-    JoystickButton button5 = new JoystickButton(cJoystick, 5);
-    JoystickButton button6 = new JoystickButton(cJoystick, 6);
-    JoystickButton button10 = new JoystickButton(cJoystick, 10);
+//    JoystickButton trigger = new JoystickButton(cJoystick, 1);
+//    JoystickButton button3 = new JoystickButton(cJoystick, 3);
+//    JoystickButton button4 = new JoystickButton(cJoystick, 4);
+//    JoystickButton button5 = new JoystickButton(cJoystick, 5);
+//    JoystickButton button6 = new JoystickButton(cJoystick, 6);
+//    JoystickButton button10 = new JoystickButton(cJoystick, 10);
 
     private UsbCamera camera;
 
@@ -103,9 +103,12 @@ public class RobotContainer
         comboBox.addOption("Center red (2)", autoPath("Center start red", 0.9f));
         comboBox.addOption("Bottom red (1)", autoPath("Bottom start red", 1.5f));
 
-        comboBox.addOption("Top blue (6)", autoPath("Top start blue", 1.5f));
+        comboBox.addOption("Top blue (6)", autoPath("Top start blue ", 1.5f));
         comboBox.addOption("Center blue (7)", autoPath("Center start blue", 0.9f));
         comboBox.addOption("Bottom blue (8)", autoPath("Bottom start blue", 1.5f));
+
+        comboBox.addOption("Center blue no x (7)", autoPath("Center start blue old", 0.9f));
+        comboBox.addOption("Center red no x (2)", autoPath("Center start red old", 0.9f));
 
         comboBox.addOption("Test path", autoPath("Test path", 0.8f));
 
@@ -162,10 +165,10 @@ public class RobotContainer
         cPanelButtons[10].whileTrue(autoAlignCubeCommand);
         cPanelButtons[11].onTrue(shelfPickupCommand);
 
-        zeroGyroJoystick.onTrue(new InstantCommand(() -> {
-            driveSubsystem.zeroGyroYaw();
-            driveSubsystem.zeroGyroRollPitch();
-        }));
+//        zeroGyroJoystick.onTrue(new InstantCommand(() -> {
+//            driveSubsystem.zeroGyroYaw();
+//            driveSubsystem.zeroGyroRollPitch();
+//        }));
 
         cXboxStart.onTrue(new InstantCommand(() -> {
             driveSubsystem.zeroDriveGyro();
@@ -236,7 +239,7 @@ public class RobotContainer
 
         eventMap.put("grabGroup", new SequentialCommandGroup(
                 new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
-                new WaitCommand(1.1),
+                new WaitCommand(1.5),
                 new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE),
                 new SetSpeedCommand(driveSubsystem, 5)));
 

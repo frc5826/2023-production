@@ -9,7 +9,7 @@ import frc.robot.fabrik.Point;
 
 public class Constants {
 
-    public static final Joystick cJoystick = new Joystick(0);
+    //public static final Joystick cJoystick = new Joystick(-1);
     public static final XboxController cXbox = new XboxController(1);
 
     public static final Joystick cButtonPanel = new Joystick(2);
@@ -66,14 +66,14 @@ public class Constants {
 
     public static final double defaultDriveSpeed = 5;
     public static double cDriveSpeed = defaultDriveSpeed;
-    public static final double onlyDriverSpeed = 1.6;
+    public static final double onlyDriverSpeed = 1.75;
     public static final double cTurnSpeed = 3;
 
     public static Trigger cXboxStart = new Trigger(() -> cXbox.getStartButtonPressed());
 
     public static Trigger cXboxRightBumper = new Trigger(() -> cXbox.getRightBumperPressed());
 
-    public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
+    //public static Trigger zeroGyroJoystick = new Trigger(() -> cJoystick.getRawButtonPressed(8));
 
     public static Trigger autoBalance = new Trigger(() -> cXbox.getRawButton(7));
     public static Trigger cXboxA = new Trigger(() -> cXbox.getAButton());

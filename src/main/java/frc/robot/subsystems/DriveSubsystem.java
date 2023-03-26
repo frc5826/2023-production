@@ -194,7 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
                         odometry::getPoseMeters,
                         new PIDController(1, 0, 0),
                         new PIDController(1, 0, 0), //make sure this is the same at the one above it (unless you doin somethin silly)
-                        new PIDController(2, 0, 0),
+                        new PIDController(1, 0, 0.5),
                         this::drive,
                         false,
                         this)
@@ -206,7 +206,7 @@ public class DriveSubsystem extends SubsystemBase {
                 odometry::getPoseMeters,
                 pose2d -> {},
                 new PIDConstants(1, 0, 0),
-                new PIDConstants(2, 0, 0),
+                new PIDConstants(4, 0, 0),
                 this::drive,
                 eventMap,
                 false,
