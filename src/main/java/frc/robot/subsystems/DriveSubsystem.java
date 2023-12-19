@@ -51,46 +51,46 @@ public class DriveSubsystem extends SubsystemBase {
         Once again enable the robot and disable it and unplug the cancoder and plug it in
          */
         MkModuleConfiguration configuration = MkModuleConfiguration.getDefaultSteerNEO();
-        configuration.setDriveCurrentLimit(50);
+        configuration.setDriveCurrentLimit(30);
 
         frontLeftModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Front Left Module", BuiltInLayouts.kList)
                 .withSize(2, 2)
                 .withPosition(0, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, speedControllers[0])
-                .withSteerMotor(MotorType.NEO, speedControllers[1])
+                .withDriveMotor(MotorType.NEO, 8)
+                .withSteerMotor(MotorType.NEO, 7)
                 .withSteerEncoderPort(50)
-                .withSteerOffset(Math.toRadians(-offsets[0]))
+                .withSteerOffset(Math.toRadians(-Constants.cCompetitionOffsets[0]))
                 .build();
 
         frontRightModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Front Right Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
                         .withPosition(2, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, speedControllers[2])
-                .withSteerMotor(MotorType.NEO, speedControllers[3])
+                .withDriveMotor(MotorType.NEO, 6)
+                .withSteerMotor(MotorType.NEO, 5)
                 .withSteerEncoderPort(51)
-                .withSteerOffset(Math.toRadians(-offsets[1]))
-                .build();
-
-        backRightModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
-                        .withSize(2, 2)
-                        .withPosition(4, 0))
-                .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, speedControllers[4])
-                .withSteerMotor(MotorType.NEO, speedControllers[5])
-                .withSteerEncoderPort(52)
-                .withSteerOffset(Math.toRadians(-offsets[2]))
+                .withSteerOffset(Math.toRadians(-Constants.cCompetitionOffsets[1]))
                 .build();
 
         backLeftModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Back Left Module", BuiltInLayouts.kList)
                         .withSize(2, 2)
+                        .withPosition(4, 0))
+                .withGearRatio(SdsModuleConfigurations.MK4_L1)
+                .withDriveMotor(MotorType.NEO, 2)
+                .withSteerMotor(MotorType.NEO, 1)
+                .withSteerEncoderPort(52)
+                .withSteerOffset(Math.toRadians(-Constants.cCompetitionOffsets[3]))
+                .build();
+
+        backRightModule = new MkSwerveModuleBuilder(configuration).withLayout(shuffleboardTab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                        .withSize(2, 2)
                         .withPosition(6, 0))
                 .withGearRatio(SdsModuleConfigurations.MK4_L1)
-                .withDriveMotor(MotorType.NEO, speedControllers[6])
-                .withSteerMotor(MotorType.NEO, speedControllers[7])
+                .withDriveMotor(MotorType.NEO, 4)
+                .withSteerMotor(MotorType.NEO, 3)
                 .withSteerEncoderPort(53)
-                .withSteerOffset(Math.toRadians(-offsets[3]))
+                .withSteerOffset(Math.toRadians(-Constants.cCompetitionOffsets[2]))
                 .build();
 
         setRampRates(frontLeftModule, frontRightModule, backLeftModule, backRightModule);

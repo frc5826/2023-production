@@ -3,23 +3,22 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.GrabbinSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class SetupGyroCommand extends CommandBase {
 
     DriveSubsystem driveSubsystem;
     VisionSubsystem visionSubsystem;
-    GrabbinSubsystem grabbinSubsystem;
+    //GrabbinSubsystem grabbinSubsystem;
 
     private boolean finished = false;
 
-    public SetupGyroCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem, GrabbinSubsystem grabbinSubsystem)
+    public SetupGyroCommand(DriveSubsystem driveSubsystem, VisionSubsystem visionSubsystem)
     {
-        this.grabbinSubsystem = grabbinSubsystem;
+        //this.grabbinSubsystem = grabbinSubsystem;
         this.driveSubsystem = driveSubsystem;
         this.visionSubsystem = visionSubsystem;
-        addRequirements(driveSubsystem, visionSubsystem, grabbinSubsystem);
+        addRequirements(driveSubsystem, visionSubsystem);
     }
 
     @Override
@@ -35,8 +34,6 @@ public class SetupGyroCommand extends CommandBase {
         }
 
         driveSubsystem.zeroGyroRollPitch();
-
-        grabbinSubsystem.close();
 
         finished = true;
     }

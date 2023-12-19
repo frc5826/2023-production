@@ -112,10 +112,10 @@ public class Constants {
     public static final int cSolenoidREV = 7;
 
     public static final double[] cCompetitionOffsets = {
-            245.6,
-            319.5,
-            164,
-            276.4
+            162.8 - 180,
+            46,
+            37.7,
+            322.7 - 180
     };
 
     public static final double[] cTestOffsets = {
@@ -127,10 +127,10 @@ public class Constants {
 
     public static final SwerveDriveKinematics cCompetitionKinematics =
             new SwerveDriveKinematics(
-                    new Translation2d(0.24765, 0.284),
-                    new Translation2d(0.24765, -0.284),
-                    new Translation2d(-0.24765, 0.284),
-                    new Translation2d(-0.24765, -0.284)
+                    new Translation2d(0.2508, 0.284),
+                    new Translation2d(0.2508, -0.284),
+                    new Translation2d(-0.2508, 0.284),
+                    new Translation2d(-0.2508, -0.284)
             );
 
     public static final SwerveDriveKinematics cTestKinematics =

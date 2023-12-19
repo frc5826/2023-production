@@ -14,14 +14,11 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.*;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.enums.ArmControlMode;
 import frc.robot.enums.GrabType;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
-import frc.robot.subsystems.GrabbinSubsystem;
 
 import java.util.HashMap;
 
@@ -38,28 +35,11 @@ public class RobotContainer
     // The robot's subsystems and commands are defined here...
     PowerDistribution powerDistribution = new PowerDistribution(21, PowerDistribution.ModuleType.kCTRE);
     private final DriveSubsystem driveSubsystem;
-    ArmSubsystem armSubsystem = new ArmSubsystem();
     VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     ShuffleboardTab dashboard = Shuffleboard.getTab("Driving");
 
     SendableChooser<Command> comboBox = new SendableChooser<Command>();
-
-    ArmRepositionCommand moveMastFwdCommand = new ArmRepositionCommand(armSubsystem, -10, 0);
-    ArmRepositionCommand moveMastBkwCommand = new ArmRepositionCommand(armSubsystem, 10, 0);
-    ArmRepositionCommand moveArmFwdCommand = new ArmRepositionCommand(armSubsystem, 0, 15);
-    ArmRepositionCommand moveArmBkwCommand = new ArmRepositionCommand(armSubsystem, 0, -15);
-
-    ArmPresetPositionCommand topCubeCommand = new ArmPresetPositionCommand(armSubsystem, cTopCube);
-    ArmPresetPositionCommand topConeCommand = new ArmPresetPositionCommand(armSubsystem, cTopCone);
-    ArmPresetPositionCommand middleCubeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCube);
-    //ArmPresetPositionCommand homeStageOneCommand = new ArmPresetPositionCommand(armSubsystem, cMastEncoderMax, ArmControlMode.MAST);
-    ArmPresetPositionCommand middleConeCommand = new ArmPresetPositionCommand(armSubsystem, cMiddleCone);
-    ArmPresetPositionCommand groundPickupCommand = new ArmPresetPositionCommand(armSubsystem, cGroundPickup);
-    ArmPresetPositionCommand groundPickup2Command = new ArmPresetPositionCommand(armSubsystem, cGroundPickup2);
-    ArmPresetPositionCommand groundDropoffCommand = new ArmPresetPositionCommand(armSubsystem, cGroundDropoff);
-    ArmPresetPositionCommand shelfPickupCommand = new ArmPresetPositionCommand(armSubsystem, cShelfPickup);
-    //ArmPresetPositionCommand homeStageTwoCommand = new ArmPresetPositionCommand(armSubsystem);
 
     {
         if (System.getenv("serialnum").equals(cTestSerialNumber)) {
@@ -72,12 +52,6 @@ public class RobotContainer
     SwerveAutoBuilder autoBuilder;
 
     FieldOrientedDriveCommand fieldOrientedDriveCommand = new FieldOrientedDriveCommand(driveSubsystem);
-    AutoBalanceCommand autoBalanceCommand = new AutoBalanceCommand(driveSubsystem);
-    AutoAlignCommand autoAlignCubeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, true);
-    AutoAlignCommand autoAlignConeCommand = new AutoAlignCommand(driveSubsystem, visionSubsystem, false);
-
-    GrabbinSubsystem grabbinSubsystem = new GrabbinSubsystem();
-    GrabbinCommand grabbinCommand = new GrabbinCommand(grabbinSubsystem, GrabType.TOGGLE);
 
     //SequentialCommandGroup homeArm = new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.7, 45),  new ArmPresetPositionCommand(armSubsystem));
 
@@ -114,8 +88,6 @@ public class RobotContainer
 
         dashboard.add("Command Chooser", comboBox).withSize(2,2).withPosition(7, 0);
 
-        dashboard.add(new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem));
-
         dashboard.addNumber("Drive speed", () -> Constants.cDriveSpeed);
 
 //        dashboard.add(new SequentialCommandGroup(
@@ -148,22 +120,7 @@ public class RobotContainer
 
     /** Use this method to define your trigger->command mappings. */
     private void configureBindings() {
-        cXboxX.onTrue(moveMastBkwCommand);
-        cXboxA.onTrue(moveArmBkwCommand);
-        cXboxB.onTrue(moveMastFwdCommand);
-        cXboxY.onTrue(moveArmFwdCommand);
 
-        cPanelButtons[0].onTrue(groundPickupCommand);
-        cPanelButtons[1].onTrue(groundDropoffCommand);
-        cPanelButtons[2].onTrue(topConeCommand);
-        cPanelButtons[3].onTrue(middleConeCommand);
-        cPanelButtons[4].whileTrue(autoAlignConeCommand);
-        cPanelButtons[5].onTrue(homeArmCommand());
-        cPanelButtons[7].onTrue(grabbinCommand);
-        cPanelButtons[8].onTrue(topCubeCommand);
-        cPanelButtons[9].onTrue(middleCubeCommand);
-        cPanelButtons[10].whileTrue(autoAlignCubeCommand);
-        cPanelButtons[11].onTrue(shelfPickupCommand);
 
 //        zeroGyroJoystick.onTrue(new InstantCommand(() -> {
 //            driveSubsystem.zeroGyroYaw();
@@ -175,7 +132,7 @@ public class RobotContainer
             driveSubsystem.zeroGyroRollPitch();
         }));
 
-        autoBalance.whileTrue(autoBalanceCommand);
+
 
 //        vibrateXbox.onTrue(new FunctionalCommand(() -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 1), () -> {
 //        }, (Boolean on) -> cXbox.setRumble(GenericHID.RumbleType.kBothRumble, 0), () -> false));
@@ -191,11 +148,7 @@ public class RobotContainer
 
     }
 
-    public Command homeArmCommand() {
-        Command homeStageOneCommand = new ArmPresetPositionCommand(armSubsystem, cMastEncoderMax, ArmControlMode.MAST);
-        Command homeStageTwoCommand = new ArmPresetPositionCommand(armSubsystem);
-        return new SequentialCommandGroup(new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE), homeStageOneCommand, new MastWaitCommand(armSubsystem, 0.7, 45),  new ArmPresetPositionCommand(armSubsystem));
-    }
+
 
 
     /**
@@ -205,13 +158,7 @@ public class RobotContainer
      */
     public Command getAutonomousCommand()
     {
-        return new AutoCommandGroup(
-                new SetupGyroCommand(driveSubsystem, visionSubsystem, grabbinSubsystem),
-                new ArmPresetPositionCommand(armSubsystem, cTopCube),
-                new AutoAlignCommand(driveSubsystem, visionSubsystem, true, 2.5),
-                new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
-                comboBox.getSelected());
-
+        return null;
     }
 
     private Command autoPath(String path, float vel) {
@@ -220,13 +167,7 @@ public class RobotContainer
 
     public HashMap<String, Command> eventMap() {
         HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("homeArm", homeArmCommand());
-        eventMap.put("groundPickUp", groundPickupCommand);
-        eventMap.put("grab", grabbinCommand);
-        eventMap.put("autoAlignCube", autoAlignCubeCommand);
-        eventMap.put("autoAlignCone", new AutoAlignCommand(driveSubsystem, visionSubsystem, false, 2));
-        eventMap.put("topCone", topConeCommand);
-        eventMap.put("autoBalance", new AutoBalanceCommand(driveSubsystem));
+
 
         eventMap.put("waitTinyTime", new WaitCommand(0.1));
         eventMap.put("waitHalfSec", new WaitCommand(.5));
@@ -234,14 +175,7 @@ public class RobotContainer
         eventMap.put("wait3sec", new WaitCommand(3));
         eventMap.put("waitRaiseArm", new WaitCommand(1.6));
 
-        eventMap.put("setSpeed3", new SetSpeedCommand(driveSubsystem, 3));
-        eventMap.put("setSpeed5", new SetSpeedCommand(driveSubsystem, 5));
 
-        eventMap.put("grabGroup", new SequentialCommandGroup(
-                new GrabbinCommand(grabbinSubsystem, GrabType.OPEN),
-                new WaitCommand(1.5),
-                new GrabbinCommand(grabbinSubsystem, GrabType.CLOSE),
-                new SetSpeedCommand(driveSubsystem, 5)));
 
         return eventMap;
     }

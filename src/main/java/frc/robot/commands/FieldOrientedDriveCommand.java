@@ -10,6 +10,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PID;
 import frc.robot.subsystems.VisionSubsystem;
 
+import static frc.robot.Constants.cXbox;
+
 public class FieldOrientedDriveCommand extends CommandBase {
 
     private final DriveSubsystem driveSubsystem;
@@ -39,6 +41,11 @@ public class FieldOrientedDriveCommand extends CommandBase {
     }
 
     public void execute() {
+
+        if (cXbox.getAButtonPressed()) {
+            driveSubsystem.zeroGyroYaw();
+        }
+
         double[] input = new double[3];
         if (DriverStation.isJoystickConnected(0)) {
             //input = getJoystickInput();
@@ -67,7 +74,10 @@ public class FieldOrientedDriveCommand extends CommandBase {
             input[1] = 0.2;
         }
 
-        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(input[0] * Constants.onlyDriverSpeed, input[1] * Constants.onlyDriverSpeed, input[2] * Constants.cTurnSpeed,
+        ChassisSpeeds speeds =  ChassisSpeeds.fromFieldRelativeSpeeds(
+                input[0] * Constants.onlyDriverSpeed,
+                input[1] * Constants.onlyDriverSpeed,
+                input[2] * Constants.cTurnSpeed,
                 driveSubsystem.getRotation().minus(Rotation2d.fromDegrees(driveSubsystem.driveGyroOffset)));
         driveSubsystem.drive(speeds);
 
