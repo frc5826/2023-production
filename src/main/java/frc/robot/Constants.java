@@ -64,10 +64,10 @@ public class Constants {
     public static final double cPeakArmOutputForward = 0.7;
     public static final double cPeakArmOutputBackward = -0.5;
 
-    public static final double defaultDriveSpeed = 5;
+    public static final double defaultDriveSpeed = 2.5;
     public static double cDriveSpeed = defaultDriveSpeed;
     public static final double onlyDriverSpeed = 1.75;
-    public static final double cTurnSpeed = 3;
+    public static final double cTurnSpeed = 4;
 
     public static Trigger cXboxStart = new Trigger(() -> cXbox.getStartButtonPressed());
 
